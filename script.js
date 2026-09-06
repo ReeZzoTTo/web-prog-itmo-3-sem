@@ -53,7 +53,19 @@ class CanvasGraphics {
 
         this.ctx.closePath()
         this.ctx.fill()
+    }
 
+    drawCircle = () => {
+        this.fillStyle = this.colors.lightBlue
+
+        this.ctx.beginPath()
+
+        this.ctx.moveTo(this.axisXPos, this.axisYPos)
+        this.ctx.arc(this.axisXPos, this.axisYPos, this.radius * 2 - this.axisXPos, Math.PI / 2, Math.PI, false)
+
+        this.ctx.fill()
+
+        this.ctx.closePath()
     }
 
     initAxisData = (radius) => {
@@ -89,7 +101,7 @@ class CanvasGraphics {
     drawArea = () => {
         this.drawRect()
         this.drawTriangle()
-        // this.drawCircle()
+        this.drawCircle()
         this.drawAxisPoints()
     }
 
