@@ -5,8 +5,13 @@ class CanvasGraphics {
         canvasGraphics: "#canvas-graphics"
     }
 
+    colors = {
+        lightBlue: "#4eacfa",
+        black: "#000000"
+    }
+
     drawMainAxis = () => {
-        this.ctx.fillStyle = "#000000"
+        this.ctx.fillStyle = this.colors.black
         this.ctx.moveTo(this.canvasWidth / 2, this.canvasHeight)
         this.ctx.lineTo(this.canvasWidth / 2, 0)
 
@@ -29,7 +34,7 @@ class CanvasGraphics {
     drawRect = () => {
         this.ctx.beginPath()
 
-        this.ctx.fillStyle = "#4eacfa"
+        this.ctx.fillStyle = this.colors.lightBlue
         this.ctx.fillRect(200, 20, 180, 180)
 
         this.ctx.stroke()
@@ -37,10 +42,21 @@ class CanvasGraphics {
     }
 
     drawTriangle = () => {
+        this.ctx.beginPath()
+
+        this.ctx.fillStyle = this.colors.lightBlue
+
+        this.ctx.moveTo(this.axisXPos, this.axisYPos)
+        this.ctx.lineTo(this.axisXPos, this.radius * 2)
+        this.ctx.lineTo(this.radius * 2, this.axisYPos)
+        this.ctx.lineTo(this.axisXPos, this.axisYPos)
+
+        this.ctx.closePath()
+        this.ctx.fill()
 
     }
 
-    drawAxisPoints = (radius) => {
+    initAxisData = (radius) => {
         const axisXPos = this.canvasHeight / 2
         const axisYPos = this.canvasWidth / 2
         this.midleStepX = (radius * 2 - (this.canvasWidth - radius * 2)) / 4
@@ -49,44 +65,55 @@ class CanvasGraphics {
 
         this.axisXPos = axisXPos
         this.axisYPos = axisYPos
+    }
+
+    drawAxisPoints = () => {
 
         this.ctx.beginPath()
-        this.drawAxisPointX(radius * 2, axisYPos)
-        this.drawAxisPointX(axisXPos + this.midleStepX, axisYPos)
-        this.drawAxisPointX(this.canvasWidth - radius * 2, axisYPos)
-        this.drawAxisPointX(axisXPos - this.midleStepX, axisYPos)
+        this.drawAxisPointX(this.radius * 2, this.axisYPos)
+        this.drawAxisPointX(this.axisXPos + this.midleStepX, this.axisYPos)
+        this.drawAxisPointX(this.canvasWidth - this.radius * 2, this.axisYPos)
+        this.drawAxisPointX(this.axisXPos - this.midleStepX, this.axisYPos)
         this.ctx.stroke()
         this.ctx.closePath()
         
         this.ctx.beginPath()
-        this.drawAxisPointY(axisXPos, radius * 2)
-        this.drawAxisPointY(axisXPos, axisYPos + this.midleStepY)
-        this.drawAxisPointY(axisXPos, this.canvasHeight - radius * 2)
-        this.drawAxisPointY(axisXPos, axisYPos - this.midleStepY)
+        this.drawAxisPointY(this.axisXPos, this.radius * 2)
+        this.drawAxisPointY(this.axisXPos, this.axisYPos + this.midleStepY)
+        this.drawAxisPointY(this.axisXPos, this.canvasHeight - this.radius * 2)
+        this.drawAxisPointY(this.axisXPos, this.axisYPos - this.midleStepY)
         this.ctx.stroke()
         this.ctx.closePath()
     }
 
     drawArea = () => {
         this.drawRect()
+        this.drawTriangle()
         // this.drawCircle()
-        // this.drawTriangle()
-        this.drawAxisPoints(190)
+        this.drawAxisPoints()
     }
 
     drawNumbers = () => {
         this.ctx.beginPath()
 
-        const startingCoord = this.canvasWidth - this.radius * 2
+        const startingCoordX = this.canvasWidth - this.radius * 2
+        const startingCoordY = this.canvasHeight - this.radius * 2
 
         this.ctx.font = "16px Arial"
         this.ctx.textAlign = "center"
         this.ctx.textBaseline = "top"
 
-        this.ctx.fillText("-R", startingCoord, this.axisXPos + 7)
-        this.ctx.fillText("-R/2", startingCoord + this.midleStepX, this.axisXPos + 7)
-        this.ctx.fillText("R/2", startingCoord + this.midleStepX * 3, this.axisXPos + 7)
-        this.ctx.fillText("R", startingCoord + this.midleStepX * 4, this.axisXPos + 7)
+        this.ctx.fillText("-R", startingCoordX, this.axisXPos + 7)
+        this.ctx.fillText("-R/2", startingCoordX + this.midleStepX, this.axisXPos + 7)
+        this.ctx.fillText("R/2", startingCoordX + this.midleStepX * 3, this.axisXPos + 7)
+        this.ctx.fillText("R", startingCoordX + this.midleStepX * 4, this.axisXPos + 7)
+
+        this.ctx.textAlign = "left"
+
+        this.ctx.fillText("R", this.axisYPos + 7, startingCoordY - 7)
+        this.ctx.fillText("R/2", this.axisYPos + 7, startingCoordY - 7 + this.midleStepY)
+        this.ctx.fillText("-R/2", this.axisYPos + 7, startingCoordY - 7 + this.midleStepY * 3)
+        this.ctx.fillText("-R", this.axisYPos + 7, startingCoordY - 7 + this.midleStepY * 4)
 
         this.ctx.closePath()
     }
@@ -101,6 +128,8 @@ class CanvasGraphics {
         this.ctx.fillStyle = "#dadada"
         this.ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight)
 
+        this.initAxisData(190)
+
         this.drawArea()
         this.drawMainAxis()
         this.drawNumbers()
@@ -108,11 +137,4 @@ class CanvasGraphics {
 }
 
 new CanvasGraphics()
-
-
-
-
-
-
-
 
