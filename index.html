@@ -6,6 +6,8 @@
     <title>Document</title>
 
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Sen:wght@400..800&display=swap');
+
         :root {
             --input-field-max-width: 40px;
         }
@@ -13,7 +15,28 @@
         body {
             margin: 0;
             padding: 0;
-            font-family: monospace;
+            background-color: white;
+            color: rgb(0, 35, 110);
+            font-family: "Noto Sans", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 500;
+            font-style: normal;
+            font-variation-settings: "wdth" 100;
+        }
+        
+        .noto-sans-font {
+            font-family: "Noto Sans", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 500;
+            font-style: normal;
+            font-variation-settings: "wdth" 100;
+        }
+
+        input, select, button {
+            background-color: inherit;
+            font-family: inherit;
+            font-weight: inherit;
+            border: none;
         }
 
         table {
@@ -23,11 +46,14 @@
         }
 
         thead {
+            font-family: monospace;
             font-size: 32px;
+            background-color: #7dc4ff;
+            box-shadow: 0 8px 10px rgba(0, 0, 0, 0.15);
         }
 
         tbody {
-            font-size: 28px;
+            font-size: 24px;
         }
 
         td {
@@ -47,16 +73,23 @@
         thead tr td:last-child {
             text-align: right;
         }
+
+        tbody tr td:first-child {
+            padding-block: 100px;
+        }
         
         #select-x, #select-y {
             min-width: var(--input-field-max-width);
             width: calc(var(--input-field-max-width) + 15px);
             font-size: 20px;
             padding: 5px;
+            background-color: #dadada;
+            border-radius: 5px;
+            border: 1px solid white;
         }
 
         #select-y {
-            width: calc(var(--input-field-max-width) + 2px);
+            width: calc(var(--input-field-max-width) + 5px);
         }
 
         select option {
@@ -73,6 +106,29 @@
         li button {
             width: 3em;
             font-size: 24px;
+        }
+
+        #btn-shoot-wrapper {
+            display: flex;
+            justify-content: center;
+            
+        }
+
+        #btn-shoot-wrapper button {
+            font-size: 24px; 
+            padding: 15px 25px;
+        }
+
+        button {
+            background-color: #81b3ff;
+            border-radius: 5px;
+            color: rgb(0, 27, 58);
+            transition: 0.4s;
+        }
+
+        button:hover {
+            scale: 1.1;
+            box-shadow: 0px 8px 10px rgba(0,0,0,0.15);
         }
 
     </style>
@@ -115,7 +171,7 @@
                             </p>
 
                             <p>
-                                <label for="button-r">Изменение R:</label>
+                                <p>Изменение R:</p>
                                 <ul type="none">
                                     <li><button type="button" id="button-r">1</button></li>
                                     <li><button type="button">2</button></li>
@@ -124,6 +180,10 @@
                                     <li><button type="button">5</button></li>
                                 </ul>
                             </p>
+
+                            <div id="btn-shoot-wrapper">
+                                <button type="submit">ВЫСТРЕЛ!</button>
+                            </div>
 
                         </fieldset>
                     </form>
