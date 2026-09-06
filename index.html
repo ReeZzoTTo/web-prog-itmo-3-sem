@@ -39,6 +39,21 @@
             border: none;
         }
 
+        form {
+            margin: 0;
+            padding: 0;
+            text-align: left;
+        }
+
+        fieldset {
+            /* border: 1px solid black; */
+            padding-inline: 30px;
+        }
+
+        legend {
+            text-align: center;
+        }
+
         table {
             table-layout: fixed;
             width: 100%;
@@ -74,8 +89,10 @@
             text-align: right;
         }
 
-        tbody tr td:first-child {
+        tbody tr td {
             padding-block: 100px;
+            /* display: flex; */
+            text-align: center;
         }
         
         #select-x, #select-y {
@@ -91,7 +108,7 @@
         #select-y {
             width: calc(var(--input-field-max-width) + 5px);
         }
-
+        
         select option {
             font-size: 20px;
         }  
@@ -188,11 +205,15 @@
                         </fieldset>
                     </form>
                 </td>
-                <td>1</td>
+                <td>
+                    <canvas id="canvas-graphics" width="400" height="400""></canvas>
+                </td>
                 <td>1</td>
             </tr>
         </tbody>
     </table>
+
+    <script src="./script.js"></script>
 
 </body>
 </html>
