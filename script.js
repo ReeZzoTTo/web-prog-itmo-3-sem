@@ -25,26 +25,43 @@ class CanvasGraphics {
     }
 
     drawRect = () => {
+        this.ctx.beginPath()
+
         this.ctx.fillStyle = "#4eacfa"
         this.ctx.fillRect(200, 20, 180, 180)
 
-        this.drawAxisPointX(380, 200)
-        this.drawAxisPointX(290, 200)
-        this.drawAxisPointX(20, 200)
-        this.drawAxisPointX(110, 200)
         this.ctx.stroke()
+        this.ctx.closePath()
+    }
 
-        this.drawAxisPointY(200, 380)
-        this.drawAxisPointY(200, 290)
-        this.drawAxisPointY(200, 20)
-        this.drawAxisPointY(200, 110)
+    drawAxisPoints = (radius) => {
+        const axisXPos = this.canvasHeight / 2
+        const axisYPos = this.canvasWidth / 2
+        const midleStepX = (radius * 2 - (this.canvasWidth - radius * 2)) / 4
+        const midleStepY = (radius * 2 - (this.canvasHeight - radius * 2)) / 4
+
+        this.ctx.beginPath()
+        this.drawAxisPointX(radius * 2, axisYPos)
+        this.drawAxisPointX(axisXPos + midleStepX, axisYPos)
+        this.drawAxisPointX(this.canvasWidth - radius * 2, axisYPos)
+        this.drawAxisPointX(axisXPos - midleStepX, axisYPos)
         this.ctx.stroke()
+        this.ctx.closePath()
+        
+        this.ctx.beginPath()
+        this.drawAxisPointY(axisXPos, radius * 2)
+        this.drawAxisPointY(axisXPos, axisYPos + midleStepY)
+        this.drawAxisPointY(axisXPos, this.canvasHeight - radius * 2)
+        this.drawAxisPointY(axisXPos, axisYPos - midleStepY)
+        this.ctx.stroke()
+        this.ctx.closePath()
     }
 
     drawArea = () => {
         this.drawRect()
         // this.drawCircle()
         // this.drawTriangle()
+        this.drawAxisPoints(190)
     }
 
     constructor() {
@@ -55,10 +72,10 @@ class CanvasGraphics {
         this.canvasHeight = this.canvasGraphics.clientHeight
 
         this.ctx.fillStyle = "#dadada"
-        this.ctx.fillRect(0, 0, 400, 400)
+        this.ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight)
 
-        this.drawMainAxis()
         this.drawArea()
+        this.drawMainAxis()
     }
 }
 
