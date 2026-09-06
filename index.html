@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        :root {
+            --input-field-max-width: 40px;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: monospace;
+        }
+
+        table {
+            table-layout: fixed;
+            width: 100%;
+            border: black 1px solid;
+        }
+
+        thead {
+            font-size: 32px;
+        }
+
+        tbody {
+            font-size: 28px;
+        }
+
+        td {
+            width: min-content;
+            padding: 15px;
+            border: 1px solid black;
+        }
+
+        thead tr td:first-child {
+            text-align: center;
+        }
+
+        thead tr td:nth-child(2) {
+            text-align: center;
+        }
+
+        thead tr td:last-child {
+            text-align: right;
+        }
+        
+        #select-x, #select-y {
+            min-width: var(--input-field-max-width);
+            width: calc(var(--input-field-max-width) + 15px);
+            font-size: 20px;
+            padding: 5px;
+        }
+
+        #select-y {
+            width: calc(var(--input-field-max-width) + 2px);
+        }
+
+        select option {
+            font-size: 20px;
+        }  
+
+        ul {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: space-evenly;
+        }
+
+        li button {
+            width: 3em;
+            font-size: 24px;
+        }
+
+    </style>
+</head>
+<body>
+    
+    <table>
+        <thead>
+            <tr>
+                <td>Саньков Андрей Андреевич</td>
+                <td>Вариант: 12695</td>
+                <td>Группа: P3212</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <form>
+                        <fieldset>
+                            <legend>Параметры выстрела</legend>
+                            <p>
+                                <label for="select-x">Изменение X:</label>
+                                <select name="coordinate-x" id="select-x">
+                                    <option value="" disabled selected></option>
+                                    <option value="-3">-3</option>
+                                    <option value="-2">-2</option>
+                                    <option value="-1">-1</option>
+                                    <option value="0">0</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                            </p>
+
+                            <p>
+                                <label for="select-y">Изменение Y:</label>
+                                <input type="text" id="select-y">
+                            </p>
+
+                            <p>
+                                <label for="button-r">Изменение R:</label>
+                                <ul type="none">
+                                    <li><button type="button" id="button-r">1</button></li>
+                                    <li><button type="button">2</button></li>
+                                    <li><button type="button">3</button></li>
+                                    <li><button type="button">4</button></li>
+                                    <li><button type="button">5</button></li>
+                                </ul>
+                            </p>
+
+                        </fieldset>
+                    </form>
+                </td>
+                <td>1</td>
+                <td>1</td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>
