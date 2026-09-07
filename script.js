@@ -10,6 +10,30 @@ class CanvasGraphics {
         black: "#000000"
     }
 
+    drawXYEndings = () => {
+        this.ctx.beginPath()
+        
+        this.ctx.moveTo(this.canvasWidth - 10, this.axisYPos - 5)
+        this.ctx.lineTo(this.canvasWidth, this.axisYPos)
+
+        this.ctx.moveTo(this.canvasWidth - 10, this.axisYPos + 5)
+        this.ctx.lineTo(this.canvasWidth, this.axisYPos)
+
+        this.ctx.moveTo(this.axisXPos - 5, 10)
+        this.ctx.lineTo(this.axisXPos, 0)
+
+        this.ctx.moveTo(this.axisXPos + 5, 10)
+        this.ctx.lineTo(this.axisXPos, 0)
+
+        this.ctx.stroke()
+        
+        this.ctx.font = "14px Arial"
+        this.ctx.fillText("x", this.canvasWidth - 10, this.axisYPos + 5)
+        this.ctx.fillText("y", this.axisXPos - 14, -2)
+        
+        this.closePath()
+    }
+
     drawMainAxis = () => {
         this.ctx.fillStyle = this.colors.black
         this.ctx.moveTo(this.canvasWidth / 2, this.canvasHeight)
@@ -145,6 +169,7 @@ class CanvasGraphics {
         this.drawArea()
         this.drawMainAxis()
         this.drawNumbers()
+        this.drawXYEndings()
     }
 }
 
