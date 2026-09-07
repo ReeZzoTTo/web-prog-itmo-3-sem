@@ -39,7 +39,7 @@
             border: none;
         }
 
-        form {
+        #shoot-form {
             margin: 0;
             padding: 0;
             text-align: left;
@@ -54,20 +54,20 @@
             text-align: center;
         }
 
-        table {
+        #main-table {
             table-layout: fixed;
             width: 100%;
             border: black 1px solid;
         }
 
-        thead {
+        #main-table .main-thead {
             font-family: monospace;
             font-size: 32px;
             background-color: #7dc4ff;
             box-shadow: 0 8px 10px rgba(0, 0, 0, 0.15);
         }
 
-        tbody {
+        #main-table .main-tbody {
             font-size: 24px;
         }
 
@@ -77,19 +77,21 @@
             border: 1px solid black;
         }
 
-        thead tr td:first-child {
+        #main-table .main-thead tr td:first-child {
             text-align: center;
         }
 
-        thead tr td:nth-child(2) {
+        #main-table .main-thead tr td:nth-child(2) {
             text-align: center;
         }
 
-        thead tr td:last-child {
+        #main-table .main-thead tr td:last-child {
             text-align: right;
         }
 
-        tbody tr td {
+
+        /*  */
+        #main-table .main-tbody tr td {     
             padding-block: 100px;
             /* display: flex; */
             text-align: center;
@@ -153,18 +155,18 @@
 </head>
 <body>
     
-    <table>
-        <thead>
+    <table id="main-table">
+        <thead class="main-thead">
             <tr>
                 <td>Саньков Андрей Андреевич</td>
                 <td>Вариант: 12695</td>
                 <td>Группа: P3212</td>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="main-tbody">
             <tr>
                 <td>
-                    <form>
+                    <form id="shoot-form">
                         <fieldset>
                             <legend>Параметры выстрела</legend>
                             <p>
@@ -191,11 +193,11 @@
                             <p>
                                 <p>Изменение R:</p>
                                 <ul type="none">
-                                    <li><button type="button" id="button-r">1</button></li>
-                                    <li><button type="button">2</button></li>
-                                    <li><button type="button">3</button></li>
-                                    <li><button type="button">4</button></li>
-                                    <li><button type="button">5</button></li>
+                                    <li><button type="button" id="button-r" class="button-R">1</button></li>
+                                    <li><button type="button" class="button-R">2</button></li>
+                                    <li><button type="button" class="button-R">3</button></li>
+                                    <li><button type="button" class="button-R">4</button></li>
+                                    <li><button type="button" class="button-R">5</button></li>
                                 </ul>
                             </p>
 
@@ -206,10 +208,24 @@
                         </fieldset>
                     </form>
                 </td>
+
                 <td>
                     <canvas id="canvas-graphics" width="400" height="400""></canvas>
                 </td>
-                <td>1</td>
+
+                <td>
+                    <table>
+                        <thead>
+                            <th>Дата</th>
+                            <th>Время</th>
+                            <th>X</th>
+                            <th>Y</th>
+                            <th>R</th>
+                            <th>Результат</th>
+                        </thead>
+                        <tbody>     </tbody>
+                    </table>
+                </td>
             </tr>
         </tbody>
     </table>

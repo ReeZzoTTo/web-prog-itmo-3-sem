@@ -1,13 +1,26 @@
 class CanvasGraphics {
-    numberMultiplier = 38
-
     selectors = {
         canvasGraphics: "#canvas-graphics"
     }
 
     colors = {
         lightBlue: "#4eacfa",
-        black: "#000000"
+        black: "#000000",
+        shootColor: "#8b0000"
+    }
+    
+    drawShoot = (X, Y, R) => {
+        X = this.axisXPos + X * this.numberMultiplier
+        Y = this.axisYPos - Y * this.numberMultiplier
+        R *= 1.5
+
+        this.ctx.beginPath()
+        this.ctx.fillStyle = this.colors.shootColor
+
+        this.ctx.arc(X, Y, R, 0, 2 * Math.PI)
+        this.ctx.fill()
+
+        this.ctx.closePath()
     }
 
     drawXYEndings = () => {
@@ -31,10 +44,12 @@ class CanvasGraphics {
         this.ctx.fillText("x", this.canvasWidth - 10, this.axisYPos + 5)
         this.ctx.fillText("y", this.axisXPos - 14, -2)
         
-        this.closePath()
+        this.ctx.closePath()
     }
 
     drawMainAxis = () => {
+        this.ctx.beginPath()
+
         this.ctx.fillStyle = this.colors.black
         this.ctx.moveTo(this.canvasWidth / 2, this.canvasHeight)
         this.ctx.lineTo(this.canvasWidth / 2, 0)
@@ -43,6 +58,7 @@ class CanvasGraphics {
         this.ctx.lineTo(this.canvasWidth, this.canvasHeight / 2)
 
         this.ctx.stroke()
+        this.ctx.closePath()
     }
 
     drawAxisPointX = (x, y) => {
@@ -154,9 +170,24 @@ class CanvasGraphics {
         this.ctx.closePath()
     }
 
+    setPoints = (low, high) => {
+        const pointsArray = new Array()
+
+        for (let i = low; i <= high; i++) {
+            pointsArray.push(i)
+        }
+    
+        this.points = [ ...pointsArray]
+    }
+
+    getPointsDifference = () => {
+        return Math.max(...this.points) - Math.min(...this.points)
+    }
+
     constructor() {
         this.canvasGraphics = document.querySelector(this.selectors.canvasGraphics)
         this.ctx = this.canvasGraphics.getContext("2d")
+        this.setPoints(-5, 5)
 
         this.canvasWidth = this.canvasGraphics.clientWidth
         this.canvasHeight = this.canvasGraphics.clientHeight
@@ -166,10 +197,36 @@ class CanvasGraphics {
 
         this.initAxisData(190)
 
+        this.numberMultiplier = (this.radius * 2 - this.axisXPos) / this.getPointsDifference()
+
         this.drawArea()
         this.drawMainAxis()
         this.drawNumbers()
         this.drawXYEndings()
+    }
+}
+
+class ButtonHandler {
+    selectors = {
+        buttonR: ".button-R"
+    }
+
+    bindEvents = () => {
+        document.addEventListener()
+    }
+
+    constructor() {
+        this.bindEvents()
+    }
+}
+
+class FormValidation {
+    selectors = {
+        shootForm: "#shoot-form"
+    }
+
+    constructor() {
+        
     }
 }
 
