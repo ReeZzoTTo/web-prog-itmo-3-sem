@@ -211,8 +211,26 @@ class ButtonHandler {
         buttonR: ".button-R"
     }
 
+    onButtonClick = (event) => {
+        const buttonList = document.querySelectorAll(".button-R")
+
+        const { target } = event
+
+        if (target.matches(this.selectors.buttonR)) {
+            buttonList.forEach(element => {
+                element.classList.remove("btn-active")
+            });
+
+            target.classList.toggle("btn-active")
+            console.log(target.value)
+        }
+
+    }
+
     bindEvents = () => {
-        document.addEventListener()
+        document.addEventListener('click', (event) => { 
+            this.onButtonClick(event) 
+        })
     }
 
     constructor() {
@@ -226,9 +244,15 @@ class FormValidation {
     }
 
     constructor() {
+        this.shootForm = document.forms.shoot__form
+        this.selectX = this.shootForm.coordinate__x
+        this.selectY = this.shootForm.coordinate__y
         
+        this.selectX.value = -2
+        this.selectY.value = 17
     }
 }
 
 new CanvasGraphics()
-
+new FormValidation()
+new ButtonHandler()

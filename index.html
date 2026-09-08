@@ -10,13 +10,17 @@
 
         :root {
             --input-field-max-width: 40px;
+            --dark-blue-color: rgb(0, 35, 110);
+            --dark-blue-color-2: rgb(0, 27, 58);
+            --light-blue-color: #81b3ff;
+            --sky-blue-color: #a2c7ff;
         }
 
         body {
             margin: 0;
             padding: 0;
             background-color: white;
-            color: rgb(0, 35, 110);
+            color: var(--dark-blue-color);
             font-family: "Noto Sans", sans-serif;
             font-optical-sizing: auto;
             font-weight: 500;
@@ -39,7 +43,7 @@
             border: none;
         }
 
-        #shoot-form {
+        #shoot__form {
             margin: 0;
             padding: 0;
             text-align: left;
@@ -139,9 +143,9 @@
         }
 
         button {
-            background-color: #81b3ff;
+            background-color: var(--light-blue-color);
             border-radius: 5px;
-            color: rgb(0, 27, 58);
+            color: var(--dark-blue-color-2);
             transition: 0.4s;
         }
 
@@ -149,6 +153,11 @@
             scale: 1.1;
             box-shadow: 0px 8px 10px rgba(0,0,0,0.15);
             background-color: #a2c7ff
+        }
+
+        .btn-active {
+            border: 1px solid var(--dark-blue-color);
+            background-color: var(--sky-blue-color);
         }
 
     </style>
@@ -166,12 +175,12 @@
         <tbody class="main-tbody">
             <tr>
                 <td>
-                    <form id="shoot-form">
+                    <form id="shoot__form">
                         <fieldset>
                             <legend>Параметры выстрела</legend>
                             <p>
                                 <label for="select-x">Изменение X:</label>
-                                <select name="coordinate-x" id="select-x">
+                                <select name="coordinate__x" id="select-x">
                                     <option value="" disabled selected></option>
                                     <option value="-3">-3</option>
                                     <option value="-2">-2</option>
@@ -187,17 +196,17 @@
 
                             <p>
                                 <label for="select-y">Изменение Y:</label>
-                                <input type="text" id="select-y">
+                                <input type="text" id="select-y" name="coordinate__y">
                             </p>
 
                             <p>
                                 <p>Изменение R:</p>
                                 <ul type="none">
-                                    <li><button type="button" id="button-r" class="button-R">1</button></li>
-                                    <li><button type="button" class="button-R">2</button></li>
-                                    <li><button type="button" class="button-R">3</button></li>
-                                    <li><button type="button" class="button-R">4</button></li>
-                                    <li><button type="button" class="button-R">5</button></li>
+                                    <li><button type="button" id="button-r" class="button-R" value="1">1</button></li>
+                                    <li><button type="button" class="button-R" value="2">2</button></li>
+                                    <li><button type="button" class="button-R" value="3">3</button></li>
+                                    <li><button type="button" class="button-R" value="4">4</button></li>
+                                    <li><button type="button" class="button-R" value="5">5</button></li>
                                 </ul>
                             </p>
 
