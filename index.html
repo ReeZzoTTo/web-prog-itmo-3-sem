@@ -47,6 +47,7 @@
             margin: 0;
             padding: 0;
             text-align: left;
+            /* box-sizing: border-box; */
         }
 
         fieldset {
@@ -94,7 +95,6 @@
         }
 
 
-        /*  */
         #main-table .main-tbody tr td {     
             padding-block: 100px;
             /* display: flex; */
@@ -137,6 +137,12 @@
             
         }
 
+        .field__error {
+            display: block;
+            font-size: 16px;
+            color: red;
+        }
+
         #btn-shoot-wrapper button {
             font-size: 24px; 
             padding: 15px 25px;
@@ -175,12 +181,18 @@
         <tbody class="main-tbody">
             <tr>
                 <td>
-                    <form id="shoot__form">
+                    <form id="shoot__form" novalidate data-js-shoot-form>
                         <fieldset>
                             <legend>Параметры выстрела</legend>
-                            <p>
+                            
+                            <p class="field">
                                 <label for="select-x">Изменение X:</label>
-                                <select name="coordinate__x" id="select-x">
+                                <select 
+                                    name="coordinate__x" 
+                                    id="select-x" 
+                                    aria-errormessage="select-x-errors"
+                                    required
+                                >
                                     <option value="" disabled selected></option>
                                     <option value="-3">-3</option>
                                     <option value="-2">-2</option>
@@ -192,14 +204,24 @@
                                     <option value="4">4</option>
                                     <option value="5">5</option>
                                 </select>
+                                <span id="select-x-errors" class="field__errors" data-js-form-field-errors></span>
                             </p>
 
-                            <p>
+                            <p class="field">
                                 <label for="select-y">Изменение Y:</label>
-                                <input type="text" id="select-y" name="coordinate__y">
+                                <input 
+                                    type="text" 
+                                    id="select-y"
+                                    name="coordinate__y"
+                                    pattern="-?[0-9]+"
+                                    title="Указанное значение должно быть числом"
+                                    aria-errormessage="select-y-errors"
+                                    required   
+                                >
+                                <span id="select-y-errors" class="field__errors" data-js-form-field-errors></span>
                             </p>
 
-                            <p>
+                            <p class="field">
                                 <p>Изменение R:</p>
                                 <ul type="none">
                                     <li><button type="button" id="button-r" class="button-R" value="1">1</button></li>
@@ -208,6 +230,7 @@
                                     <li><button type="button" class="button-R" value="4">4</button></li>
                                     <li><button type="button" class="button-R" value="5">5</button></li>
                                 </ul>
+                                <span class="field-errors"></span>
                             </p>
 
                             <div id="btn-shoot-wrapper">

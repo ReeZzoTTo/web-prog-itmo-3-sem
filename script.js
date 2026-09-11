@@ -96,7 +96,7 @@ class CanvasGraphics {
     }
 
     drawCircle = () => {
-        this.fillStyle = this.colors.lightBlue
+        this.ctx.fillStyle = this.colors.lightBlue
 
         this.ctx.beginPath()
 
@@ -240,16 +240,68 @@ class ButtonHandler {
 
 class FormValidation {
     selectors = {
-        shootForm: "#shoot-form"
+        shootForm: "[data-js-shoot-form]",
+        fieldErrors: "[data-js-form-field-errors]",
+    }
+
+    errorMessages = {
+        valueMissing: () => "Пожалуйста, заполните это поле",
+        patternMismatch: ({ title }) => title || "Данные не соответствуют формату",
+        numberInvalid: () => "Диапазон числа: [-5; 3]"
+    }
+
+    onBlur(event) {
+        const { target } = event
+        const isFormField = target.closest(this.selectors.shootForm)
+        const isRequired = target.required
+
+        if (isFormField && isRequired) {
+            this.validateField(target)
+        }
+
+    }
+
+    manageErrors(fieldControlElement, errorMessages) {
+        const fieldErrorsElement = fieldControlElement.parentElement.querySelector(this.selectors.fieldErrors)
+        
+        fieldErrorsElement.innerHTML = errorMessages
+            .map((message) => `<span class="field__error">${message}</span>`)
+            .join('')
+    
+    }
+
+    validateField(fieldControlElement) {
+        const errors = fieldControlElement.validity
+        const errorMessages = []
+        const value = Number(fieldControlElement.value)
+
+        if (fieldControlElement.name === "coordinate__y" && (value < -5 || value > 3)) {
+            errorMessages.push(this.errorMessages.numberInvalid())
+        }
+
+        Object.entries(this.errorMessages).forEach(([ errorType, getErrorMessage ]) => {
+            if (errors[errorType]) {
+                errorMessages.push(getErrorMessage(fieldControlElement))
+            }
+        })
+
+        const isValid = errorMessages.length === 0
+
+        this.manageErrors(fieldControlElement, errorMessages)
+
+
+        return isValid
+
+    }
+
+    bindEvents() {
+        document.addEventListener("blur", (event) => this.onBlur(event), { capture: true })
+        
     }
 
     constructor() {
         this.shootForm = document.forms.shoot__form
-        this.selectX = this.shootForm.coordinate__x
-        this.selectY = this.shootForm.coordinate__y
-        
-        this.selectX.value = -2
-        this.selectY.value = 17
+        this.bindEvents()
     }
 }
 
