@@ -8,7 +8,31 @@ class CanvasGraphics {
         black: "#000000",
         shootColor: "#8b0000"
     }
-    
+
+    constructor() {
+        this.canvasGraphics = document.querySelector(this.selectors.canvasGraphics)
+        this.ctx = this.canvasGraphics.getContext("2d")
+        this.pointsRange = {
+            min: -5,
+            max: 5
+        }
+
+        this.canvasWidth = this.canvasGraphics.width
+        this.canvasHeight = this.canvasGraphics.height
+
+        this.ctx.fillStyle = "#dadada"
+        this.ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight)
+
+        this.initAxisData(190)
+
+        this.numberMultiplier = (this.radius * 2 - this.axisXPos) / (this.pointsRange.max - this.pointsRange.min)
+
+        this.drawArea()
+        this.drawMainAxis()
+        this.drawNumbers()
+        this.drawXYEndings()
+    }
+
     drawShoot = (X, Y, R) => {
         X = this.axisXPos + X * this.numberMultiplier
         Y = this.axisYPos - Y * this.numberMultiplier
@@ -109,10 +133,10 @@ class CanvasGraphics {
     }
 
     initAxisData = (radius) => {
-        const axisXPos = this.canvasHeight / 2
-        const axisYPos = this.canvasWidth / 2
-        this.midleStepX = (radius * 2 - (this.canvasWidth - radius * 2)) / 4
-        this.midleStepY = (radius * 2 - (this.canvasHeight - radius * 2)) / 4
+        const axisXPos = this.canvasWidth / 2
+        const axisYPos = this.canvasHeight / 2
+        this.middleStepX = (radius * 2 - (this.canvasWidth - radius * 2)) / 4
+        this.middleStepY = (radius * 2 - (this.canvasHeight - radius * 2)) / 4
         this.radius = radius
 
         this.axisXPos = axisXPos
@@ -123,17 +147,17 @@ class CanvasGraphics {
 
         this.ctx.beginPath()
         this.drawAxisPointX(this.radius * 2, this.axisYPos)
-        this.drawAxisPointX(this.axisXPos + this.midleStepX, this.axisYPos)
+        this.drawAxisPointX(this.axisXPos + this.middleStepX, this.axisYPos)
         this.drawAxisPointX(this.canvasWidth - this.radius * 2, this.axisYPos)
-        this.drawAxisPointX(this.axisXPos - this.midleStepX, this.axisYPos)
+        this.drawAxisPointX(this.axisXPos - this.middleStepX, this.axisYPos)
         this.ctx.stroke()
         this.ctx.closePath()
         
         this.ctx.beginPath()
         this.drawAxisPointY(this.axisXPos, this.radius * 2)
-        this.drawAxisPointY(this.axisXPos, this.axisYPos + this.midleStepY)
+        this.drawAxisPointY(this.axisXPos, this.axisYPos + this.middleStepY)
         this.drawAxisPointY(this.axisXPos, this.canvasHeight - this.radius * 2)
-        this.drawAxisPointY(this.axisXPos, this.axisYPos - this.midleStepY)
+        this.drawAxisPointY(this.axisXPos, this.axisYPos - this.middleStepY)
         this.ctx.stroke()
         this.ctx.closePath()
     }
@@ -146,8 +170,6 @@ class CanvasGraphics {
     }
 
     drawNumbers = () => {
-        this.ctx.beginPath()
-
         const startingCoordX = this.canvasWidth - this.radius * 2
         const startingCoordY = this.canvasHeight - this.radius * 2
 
@@ -156,54 +178,19 @@ class CanvasGraphics {
         this.ctx.textBaseline = "top"
 
         this.ctx.fillText("-R", startingCoordX, this.axisXPos + 7)
-        this.ctx.fillText("-R/2", startingCoordX + this.midleStepX, this.axisXPos + 7)
-        this.ctx.fillText("R/2", startingCoordX + this.midleStepX * 3, this.axisXPos + 7)
-        this.ctx.fillText("R", startingCoordX + this.midleStepX * 4, this.axisXPos + 7)
+        this.ctx.fillText("-R/2", startingCoordX + this.middleStepX, this.axisXPos + 7)
+        this.ctx.fillText("R/2", startingCoordX + this.middleStepX * 3, this.axisXPos + 7)
+        this.ctx.fillText("R", startingCoordX + this.middleStepX * 4, this.axisXPos + 7)
 
         this.ctx.textAlign = "left"
 
         this.ctx.fillText("R", this.axisYPos + 7, startingCoordY - 7)
-        this.ctx.fillText("R/2", this.axisYPos + 7, startingCoordY - 7 + this.midleStepY)
-        this.ctx.fillText("-R/2", this.axisYPos + 7, startingCoordY - 7 + this.midleStepY * 3)
-        this.ctx.fillText("-R", this.axisYPos + 7, startingCoordY - 7 + this.midleStepY * 4)
-
-        this.ctx.closePath()
+        this.ctx.fillText("R/2", this.axisYPos + 7, startingCoordY - 7 + this.middleStepY)
+        this.ctx.fillText("-R/2", this.axisYPos + 7, startingCoordY - 7 + this.middleStepY * 3)
+        this.ctx.fillText("-R", this.axisYPos + 7, startingCoordY - 7 + this.middleStepY * 4)
     }
 
-    setPoints = (low, high) => {
-        const pointsArray = new Array()
-
-        for (let i = low; i <= high; i++) {
-            pointsArray.push(i)
-        }
     
-        this.points = [ ...pointsArray]
-    }
-
-    getPointsDifference = () => {
-        return Math.max(...this.points) - Math.min(...this.points)
-    }
-
-    constructor() {
-        this.canvasGraphics = document.querySelector(this.selectors.canvasGraphics)
-        this.ctx = this.canvasGraphics.getContext("2d")
-        this.setPoints(-5, 5)
-
-        this.canvasWidth = this.canvasGraphics.clientWidth
-        this.canvasHeight = this.canvasGraphics.clientHeight
-
-        this.ctx.fillStyle = "#dadada"
-        this.ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight)
-
-        this.initAxisData(190)
-
-        this.numberMultiplier = (this.radius * 2 - this.axisXPos) / this.getPointsDifference()
-
-        this.drawArea()
-        this.drawMainAxis()
-        this.drawNumbers()
-        this.drawXYEndings()
-    }
 }
 
 class ButtonHandler {
@@ -258,7 +245,32 @@ class FormValidation {
         if (isFormField && isRequired) {
             this.validateField(target)
         }
+    }
 
+    onSubmit(event) {
+        const { target } = event
+
+        const isFormElement = target.matches(this.selectors.shootForm)
+
+        if (!isFormElement) {
+            return
+        }
+
+        const requiredControlElements = [...this.shootForm.elements]
+            .filter(({ required }) => required)
+        let isFormValid = true
+
+        requiredControlElements.forEach((element) => {
+            const isFieldValid = this.validateField(element)
+
+            if (!isFieldValid) {
+                isFormValid = false
+            }
+        })
+
+        if (!isFormValid) {
+            event.preventDefault()
+        }
     }
 
     manageErrors(fieldControlElement, errorMessages) {
@@ -289,14 +301,13 @@ class FormValidation {
 
         this.manageErrors(fieldControlElement, errorMessages)
 
-
         return isValid
 
     }
 
     bindEvents() {
         document.addEventListener("blur", (event) => this.onBlur(event), { capture: true })
-        
+        document.addEventListener("submit", (event) => this.onSubmit(event))
     }
 
     constructor() {
