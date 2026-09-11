@@ -225,17 +225,19 @@
                                 <span id="select-y-errors" class="field__errors" data-js-form-field-errors></span>
                             </p>
 
-                            <p class="field">
+                            <div class="field">
                                 <p>Изменение R:</p>
                                 <ul type="none">
                                     <li><button type="button" id="button-r" class="button-R" value="1">1</button></li>
-                                    <li><button type="button" class="button-R" value="2">2</button></li>
-                                    <li><button type="button" class="button-R" value="3">3</button></li>
-                                    <li><button type="button" class="button-R" value="4">4</button></li>
-                                    <li><button type="button" class="button-R" value="5">5</button></li>
+                                    <li><button name="btn-R-field" type="button" class="button-R" value="2">2</button></li>
+                                    <li><button name="btn-R-field" type="button" class="button-R" value="3">3</button></li>
+                                    <li><button name="btn-R-field" type="button" class="button-R" value="4">4</button></li>
+                                    <li><button name="btn-R-field" type="button" class="button-R" value="5">5</button></li>
                                 </ul>
-                                <span class="field-errors"></span>
-                            </p>
+                                <input type="hidden" id="select-r" name="selection-r" aria-errormessage="select-r-errors" required>
+                                <br>
+                                <span class="field__errors" id="select-r-errors" data-js-form-field-errors></span>
+                            </div>
 
                             <div id="btn-shoot-wrapper">
                                 <button type="submit">ВЫСТРЕЛ!</button>

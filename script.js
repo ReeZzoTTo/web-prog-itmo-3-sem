@@ -193,13 +193,24 @@ class CanvasGraphics {
     
 }
 
-class ButtonHandler {
+
+class SelectionR {
     selectors = {
         buttonR: ".button-R"
     }
     activeClass = "btn-active"
 
-    onButtonClick = (event) => {
+    constructor() {
+        this.bindEvents()
+    }
+
+    bindEvents() {
+        document.addEventListener("click", (event) => this.onButtonClick(event))
+    }
+
+// ONCHANGE!!!!!
+
+    onButtonClick(event) {
         const { target } = event
 
         if (target.matches(this.selectors.buttonR)) {
@@ -211,19 +222,13 @@ class ButtonHandler {
             });
 
             target.classList.toggle(this.activeClass, !wasActive)
-            console.log(target.value)
+            wasActive
+                ? this.value = ''
+                : this.value = target.value
+            
+            const inputR = document.querySelector("#select-r")            
+            inputR.value = this.value
         }
-
-    }
-
-    bindEvents = () => {
-        document.addEventListener('click', (event) => { 
-            this.onButtonClick(event) 
-        })
-    }
-
-    constructor() {
-        this.bindEvents()
     }
 }
 
@@ -236,7 +241,38 @@ class FormValidation {
     errorMessages = {
         valueMissing: () => "Пожалуйста, заполните это поле",
         patternMismatch: ({ title }) => title || "Данные не соответствуют формату",
-        numberInvalid: () => "Диапазон числа: [-5; 3]"
+    }
+
+    customErrorMessages = {
+        numberInvalid:"Диапазон числа: [-5; 3]",
+        buttonSelect: "Необходимо выбрать одно из значений от 1 до 5"
+    }
+    
+    
+    value = null
+
+    constructor() {
+        this.shootForm = document.forms.shoot__form
+        this.bindEvents()
+    }
+
+    bindEvents() {
+        document.addEventListener("blur", (event) => this.onBlur(event), { capture: true })
+        document.addEventListener("submit", (event) => this.onSubmit(event))
+        document.addEventListener("change", (event) => this.onBlur(event), { capture: true })
+    }
+    
+    onChange(event) {
+        const { target } = event
+        const isFormField = target.closest(this.selectors.shootForm)
+        const isRequired = target.required
+
+        
+
+    }
+
+    getValue() {
+        return this.value
     }
 
     onBlur(event) {
@@ -250,6 +286,7 @@ class FormValidation {
     }
 
     onSubmit(event) {
+        event.preventDefault()
         const { target } = event
 
         const isFormElement = target.matches(this.selectors.shootForm)
@@ -270,14 +307,33 @@ class FormValidation {
             }
         })
 
+        const btnRElements = document.querySelectorAll(".button-R")
+        const btnRList = [...btnRElements]
+            .filter((button) => button.classList.contains("btn-active")
+        )
+
+
+        if (isFormValid) {
+            isFormValid = btnRList.length > 0
+        }
+
         if (!isFormValid) {
             event.preventDefault()
+        } else {
+            const formData = new FormData(this.shootForm)
+            console.log(...formData);
+            alert("form send")
         }
+        event.preventDefault()
     }
 
     manageErrors(fieldControlElement, errorMessages) {
+        console.log(fieldControlElement.validity);
+        
         const fieldErrorsElement = fieldControlElement.parentElement.querySelector(this.selectors.fieldErrors)
         
+        console.log(fieldControlElement.parentElement)
+
         fieldErrorsElement.innerHTML = errorMessages
             .map((message) => `<span class="field__error">${message}</span>`)
             .join('')
@@ -290,7 +346,7 @@ class FormValidation {
         const value = Number(fieldControlElement.value)
 
         if (fieldControlElement.name === "coordinate__y" && (value < -5 || value > 3)) {
-            errorMessages.push(this.errorMessages.numberInvalid())
+            errorMessages.push(this.customErrorMessages.numberInvalid)
         }
 
         Object.entries(this.errorMessages).forEach(([ errorType, getErrorMessage ]) => {
@@ -307,17 +363,27 @@ class FormValidation {
 
     }
 
-    bindEvents() {
-        document.addEventListener("blur", (event) => this.onBlur(event), { capture: true })
-        document.addEventListener("submit", (event) => this.onSubmit(event))
-    }
-
-    constructor() {
-        this.shootForm = document.forms.shoot__form
-        this.bindEvents()
-    }
+    
 }
 
-new CanvasGraphics()
-new FormValidation()
-new ButtonHandler()
+class App {
+    state = {
+        x: null,
+        y: null,
+        r: null,
+        shoots: []
+    }
+
+
+    constructor() {
+        this.main()
+    }
+
+    main() {
+        new CanvasGraphics()
+        new FormValidation()
+        new SelectionR()
+    }    
+}
+
+new App()
