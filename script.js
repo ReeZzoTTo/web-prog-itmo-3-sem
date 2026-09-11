@@ -197,18 +197,20 @@ class ButtonHandler {
     selectors = {
         buttonR: ".button-R"
     }
+    activeClass = "btn-active"
 
     onButtonClick = (event) => {
-        const buttonList = document.querySelectorAll(".button-R")
-
         const { target } = event
 
         if (target.matches(this.selectors.buttonR)) {
+            const buttonList = document.querySelectorAll(this.selectors.buttonR)
+            const wasActive = target.classList.contains(this.activeClass)
+
             buttonList.forEach(element => {
-                element.classList.remove("btn-active")
+                element.classList.remove(this.activeClass)
             });
 
-            target.classList.toggle("btn-active")
+            target.classList.toggle(this.activeClass, !wasActive)
             console.log(target.value)
         }
 
