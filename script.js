@@ -12,39 +12,63 @@ class CanvasGraphics {
     constructor() {
         this.canvasGraphics = document.querySelector(this.selectors.canvasGraphics)
         this.ctx = this.canvasGraphics.getContext("2d")
-        this.pointsRange = {
-            min: -5,
-            max: 5
-        }
 
         this.canvasWidth = this.canvasGraphics.width
         this.canvasHeight = this.canvasGraphics.height
 
+        this.render()
+        
+    }
+
+    fillBackground() {
         this.ctx.fillStyle = "#dadada"
         this.ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight)
+    }
 
-        this.initAxisData(190)
+    shoot({x, y, r}) {
+        this.render()
+        this.drawShoot(x, y, r)
+        
+        return this.checkShoot(x, y, r)
+    }
 
-        this.numberMultiplier = (this.radius * 2 - this.axisXPos) / (this.pointsRange.max - this.pointsRange.min)
-
+    render() {
+        this.fillBackground()
+        this.initAxisData(180)
         this.drawArea()
         this.drawMainAxis()
         this.drawNumbers()
         this.drawXYEndings()
     }
 
-    drawShoot = (X, Y, R) => {
-        X = this.axisXPos + X * this.numberMultiplier
-        Y = this.axisYPos - Y * this.numberMultiplier
-        R *= 1.5
+    drawShoot = (x, y, r) => {
+        const dotMultiplier = this.radius / r
+
+        x = this.axisXPos + x * dotMultiplier
+        y = this.axisYPos - y * dotMultiplier        
 
         this.ctx.beginPath()
         this.ctx.fillStyle = this.colors.shootColor
 
-        this.ctx.arc(X, Y, R, 0, 2 * Math.PI)
+        this.ctx.arc(x, y, 4, 0, 2 * Math.PI)
         this.ctx.fill()
 
         this.ctx.closePath()
+    }
+
+    checkShoot(x, y, r) {
+        const triangleCheckSector = -(r - x)
+
+        if (
+            (x < -r || x > r) || (y < -r || y > r)
+            || (x < 0 && y > 0)
+            || (x > 0 && y < 0 && x > triangleCheckSector && y < triangleCheckSector)
+            || (x < 0 && y < 0 && (x**2 + y**2 > r**2))
+        ) {
+            return false
+        }
+
+        return true
     }
 
     drawXYEndings = () => {
@@ -99,7 +123,7 @@ class CanvasGraphics {
         this.ctx.beginPath()
 
         this.ctx.fillStyle = this.colors.lightBlue
-        this.ctx.fillRect(200, 20, 180, 180)
+        this.ctx.fillRect(this.axisXPos, this.axisYPos - this.radius, this.radius, this.radius)
 
         this.ctx.stroke()
         this.ctx.closePath()
@@ -111,8 +135,8 @@ class CanvasGraphics {
         this.ctx.fillStyle = this.colors.lightBlue
 
         this.ctx.moveTo(this.axisXPos, this.axisYPos)
-        this.ctx.lineTo(this.axisXPos, this.radius * 2)
-        this.ctx.lineTo(this.radius * 2, this.axisYPos)
+        this.ctx.lineTo(this.axisXPos, this.axisYPos + this.radius)
+        this.ctx.lineTo(this.axisXPos + this.radius, this.axisYPos)
         this.ctx.lineTo(this.axisXPos, this.axisYPos)
 
         this.ctx.closePath()
@@ -125,7 +149,7 @@ class CanvasGraphics {
         this.ctx.beginPath()
 
         this.ctx.moveTo(this.axisXPos, this.axisYPos)
-        this.ctx.arc(this.axisXPos, this.axisYPos, this.radius * 2 - this.axisXPos, Math.PI / 2, Math.PI, false)
+        this.ctx.arc(this.axisXPos, this.axisYPos, this.radius, Math.PI / 2, Math.PI, false)
 
         this.ctx.fill()
 
@@ -135,8 +159,9 @@ class CanvasGraphics {
     initAxisData = (radius) => {
         const axisXPos = this.canvasWidth / 2
         const axisYPos = this.canvasHeight / 2
-        this.middleStepX = (radius * 2 - (this.canvasWidth - radius * 2)) / 4
-        this.middleStepY = (radius * 2 - (this.canvasHeight - radius * 2)) / 4
+
+        this.middleStepX = (radius * 2 / 4)
+        this.middleStepY = (radius * 2 / 4)
         this.radius = radius
 
         this.axisXPos = axisXPos
@@ -144,22 +169,22 @@ class CanvasGraphics {
     }
 
     drawAxisPoints = () => {
+        const startingCoordX = this.axisXPos - this.radius
+        const startingCoordY = this.axisYPos - this.radius
 
         this.ctx.beginPath()
-        this.drawAxisPointX(this.radius * 2, this.axisYPos)
-        this.drawAxisPointX(this.axisXPos + this.middleStepX, this.axisYPos)
-        this.drawAxisPointX(this.canvasWidth - this.radius * 2, this.axisYPos)
-        this.drawAxisPointX(this.axisXPos - this.middleStepX, this.axisYPos)
+
+        for (let i = 0; i < 5; i++) {
+            if (i === 2) {
+                continue
+            }
+            this.drawAxisPointX(startingCoordX + this.middleStepX * i, this.axisYPos)
+            this.drawAxisPointY(this.axisXPos, startingCoordY + this.middleStepX * i)
+        } 
+
         this.ctx.stroke()
         this.ctx.closePath()
-        
-        this.ctx.beginPath()
-        this.drawAxisPointY(this.axisXPos, this.radius * 2)
-        this.drawAxisPointY(this.axisXPos, this.axisYPos + this.middleStepY)
-        this.drawAxisPointY(this.axisXPos, this.canvasHeight - this.radius * 2)
-        this.drawAxisPointY(this.axisXPos, this.axisYPos - this.middleStepY)
-        this.ctx.stroke()
-        this.ctx.closePath()
+
     }
 
     drawArea = () => {
@@ -170,8 +195,8 @@ class CanvasGraphics {
     }
 
     drawNumbers = () => {
-        const startingCoordX = this.canvasWidth - this.radius * 2
-        const startingCoordY = this.canvasHeight - this.radius * 2
+        const startingCoordX = this.axisXPos - this.radius
+        const startingCoordY = this.axisYPos - this.radius
 
         this.ctx.font = "16px Arial"
         this.ctx.textAlign = "center"
@@ -239,8 +264,9 @@ class FormValidation {
         buttonSelect: "Необходимо выбрать одно из значений от 1 до 5"
     }
 
-    constructor() {
+    constructor(canvasObj) {
         this.shootForm = document.forms.shoot__form
+        this.canvasGraphics = canvasObj
         this.bindEvents()
     }
 
@@ -299,9 +325,19 @@ class FormValidation {
         if (!isFormValid) {
             event.preventDefault()
             } else {
-            const formData = new FormData(this.shootForm)
-            console.log(...formData);
-            alert("form send")
+
+            const formState = {
+                x: target.coordinate__x.value,
+                y: target.coordinate__y.value,
+                r: btnRList[0].value,
+                isHit: null
+            }
+
+            formState.isHit = this.canvasGraphics.shoot(formState)
+
+            console.log(formState);
+
+            event.preventDefault()
         }
         event.preventDefault()
     }
@@ -351,9 +387,8 @@ class App {
         x: null,
         y: null,
         r: null,
-        shoots: []
     }
-
+    shoots = []
 
     constructor() {
         this.main()
@@ -361,8 +396,9 @@ class App {
 
     main() {
         const canvasGraphics = new CanvasGraphics()
-        const formValidation = new FormValidation()
+        const formValidation = new FormValidation(canvasGraphics)
         const selectionR = new SelectionR()
+
     }    
 }
 
