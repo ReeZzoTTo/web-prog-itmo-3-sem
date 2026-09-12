@@ -97,8 +97,10 @@
 
         #main-table .main-tbody tr td {     
             padding-block: 100px;
+            box-sizing: border-box;
             /* display: flex; */
             text-align: center;
+            vertical-align: top;
         }
         
         #select-x, #select-y {
@@ -131,16 +133,31 @@
             font-size: 24px;
         }
 
+        #select-r-errors {
+            margin-block: 5px;
+        }
+
         #btn-shoot-wrapper {
             display: flex;
             justify-content: center;
             
         }
 
+        .field {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
         .field__error {
             display: block;
             font-size: 16px;
             color: red;
+        }
+
+        .field__errors {
+            position: absolute;
+            left: 0%;
+            top: 100%;
         }
 
         #btn-shoot-wrapper button {
@@ -234,9 +251,9 @@
                                     <li><button name="btn-R-field" type="button" class="button-R" value="4">4</button></li>
                                     <li><button name="btn-R-field" type="button" class="button-R" value="5">5</button></li>
                                 </ul>
-                                <input type="hidden" id="select-r" name="selection-r" aria-errormessage="select-r-errors" required>
-                                <br>
-                                <span class="field__errors" id="select-r-errors" data-js-form-field-errors></span>
+                                <!-- <input type="hidden" id="select-r" name="selection-r" aria-errormessage="select-r-errors" required> -->
+                                <!-- <br> -->
+                                <div class="field__errors" id="select-r-errors" data-js-form-field-errors></div>
                             </div>
 
                             <div id="btn-shoot-wrapper">

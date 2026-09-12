@@ -193,7 +193,6 @@ class CanvasGraphics {
     
 }
 
-
 class SelectionR {
     selectors = {
         buttonR: ".button-R"
@@ -208,8 +207,6 @@ class SelectionR {
         document.addEventListener("click", (event) => this.onButtonClick(event))
     }
 
-// ONCHANGE!!!!!
-
     onButtonClick(event) {
         const { target } = event
 
@@ -222,12 +219,6 @@ class SelectionR {
             });
 
             target.classList.toggle(this.activeClass, !wasActive)
-            wasActive
-                ? this.value = ''
-                : this.value = target.value
-            
-            const inputR = document.querySelector("#select-r")            
-            inputR.value = this.value
         }
     }
 }
@@ -247,9 +238,6 @@ class FormValidation {
         numberInvalid:"Диапазон числа: [-5; 3]",
         buttonSelect: "Необходимо выбрать одно из значений от 1 до 5"
     }
-    
-    
-    value = null
 
     constructor() {
         this.shootForm = document.forms.shoot__form
@@ -259,22 +247,8 @@ class FormValidation {
     bindEvents() {
         document.addEventListener("blur", (event) => this.onBlur(event), { capture: true })
         document.addEventListener("submit", (event) => this.onSubmit(event))
-        document.addEventListener("change", (event) => this.onBlur(event), { capture: true })
     }
     
-    onChange(event) {
-        const { target } = event
-        const isFormField = target.closest(this.selectors.shootForm)
-        const isRequired = target.required
-
-        
-
-    }
-
-    getValue() {
-        return this.value
-    }
-
     onBlur(event) {
         const { target } = event
         const isFormField = target.closest(this.selectors.shootForm)
@@ -312,14 +286,19 @@ class FormValidation {
             .filter((button) => button.classList.contains("btn-active")
         )
 
+        let isButtonSelected = btnRList.length > 0
+        const buttonErrorField = document.querySelector("#select-r-errors")
 
-        if (isFormValid) {
-            isFormValid = btnRList.length > 0
+        if (!isButtonSelected) {
+            isFormValid = false
+            buttonErrorField.innerHTML = `<span class="field__error">${this.customErrorMessages.buttonSelect}</span>`
+        } else {
+            buttonErrorField.innerHTML = ''
         }
 
         if (!isFormValid) {
             event.preventDefault()
-        } else {
+            } else {
             const formData = new FormData(this.shootForm)
             console.log(...formData);
             alert("form send")
@@ -330,7 +309,8 @@ class FormValidation {
     manageErrors(fieldControlElement, errorMessages) {
         console.log(fieldControlElement.validity);
         
-        const fieldErrorsElement = fieldControlElement.parentElement.querySelector(this.selectors.fieldErrors)
+        const errorsId = fieldControlElement.getAttribute("aria-errormessage")
+        const fieldErrorsElement = document.getElementById(errorsId)
         
         console.log(fieldControlElement.parentElement)
 
@@ -380,9 +360,9 @@ class App {
     }
 
     main() {
-        new CanvasGraphics()
-        new FormValidation()
-        new SelectionR()
+        const canvasGraphics = new CanvasGraphics()
+        const formValidation = new FormValidation()
+        const selectionR = new SelectionR()
     }    
 }
 
