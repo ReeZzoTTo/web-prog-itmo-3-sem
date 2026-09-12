@@ -76,29 +76,27 @@
             font-size: 24px;
         }
 
-        td {
+        .main-tr td {
             width: min-content;
             padding: 15px;
             border: 1px solid black;
         }
 
-        #main-table .main-thead tr td:first-child {
+        .main-tr td:first-child {
+            text-align: left;
+        }
+
+        .main-tr td:nth-child(2) {
             text-align: center;
         }
 
-        #main-table .main-thead tr td:nth-child(2) {
-            text-align: center;
-        }
-
-        #main-table .main-thead tr td:last-child {
+        .main-tr td:last-child {
             text-align: right;
         }
 
-
-        #main-table .main-tbody tr td {     
-            padding-block: 100px;
-            box-sizing: border-box;
-            /* display: flex; */
+        .main-tbody-td {     
+            padding: 100px 15px;
+            /* box-sizing: border-box; */
             text-align: center;
             vertical-align: top;
         }
@@ -187,21 +185,48 @@
             background-color: var(--sky-blue-color);
         }
 
+        #shoots-table {
+            font-size: 20px;
+            color: white;
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        #shoots-table th, 
+        #shoots-table td {
+            padding: 5px;
+            border-width: 0 1px 1px 0;
+            border-color: white;
+            border-style: solid;
+        }
+
+        #shoots-table tbody td {
+            background: #D8E6F3;
+        }
+
+        #shoots-table thead th {
+            background-color: var(--light-blue-color);
+        }
+
+        #shoot-list {
+            color: var(--dark-blue-color);
+        }
+
     </style>
 </head>
 <body>
     
     <table id="main-table">
         <thead class="main-thead">
-            <tr>
+            <tr class="main-tr">
                 <td>Саньков Андрей Андреевич</td>
                 <td>Вариант: 12695</td>
                 <td>Группа: P3212</td>
             </tr>
         </thead>
         <tbody class="main-tbody">
-            <tr>
-                <td>
+            <tr class="main-tbody-tr">
+                <td class="main-tbody-td">
                     <form id="shoot__form" novalidate data-js-shoot-form>
                         <fieldset>
                             <legend>Параметры выстрела</legend>
@@ -264,21 +289,32 @@
                     </form>
                 </td>
 
-                <td>
+                <td class="main-tbody-td">
                     <canvas id="canvas-graphics" width="400" height="400"></canvas>
                 </td>
 
-                <td>
-                    <table>
+                <td class="main-tbody-td">
+                    <table id="shoots-table">
                         <thead>
-                            <th>Дата</th>
-                            <th>Время</th>
-                            <th>X</th>
-                            <th>Y</th>
-                            <th>R</th>
-                            <th>Результат</th>
+                            <tr>
+                                <th>Дата</th>
+                                <th>Время</th>
+                                <th>X</th>
+                                <th>Y</th>
+                                <th>R</th>
+                                <th>Результат</th>
+                            </tr>
                         </thead>
-                        <tbody>     </tbody>
+                        <tbody id="shoot-list">
+                            <tr>
+                                <td>1</td>
+                                <td>2</td>
+                                <td>2</td>
+                                <td>2</td>
+                                <td>2</td>
+                                <td>2</td>
+                            </tr>
+                        </tbody>
                     </table>
                 </td>
             </tr>
