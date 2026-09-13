@@ -356,7 +356,11 @@ class FormValidation {
                 currentShootsState = {}
             }
             currentShootsState[date.toLocaleString()] = formState
-            console.log(currentShootsState);
+            
+            if (Object.keys(currentShootsState).length >= 8) {
+                const firstElId = Object.keys(currentShootsState)[0]
+                delete currentShootsState[firstElId]
+            }
             
             localStorage.setItem(this.storageKey, JSON.stringify(currentShootsState))
 
@@ -413,33 +417,49 @@ class ShootsTable {
     }
 
     update() {
-        const shootList = document.querySelector(this.selectors.tableBody)
         const shoots = JSON.parse(
             localStorage.getItem(this.storageKey)
         )
         let innerString = ""
+        let counter = 0
 
-        for (const shootDate of Object.keys(shoots)) {
-            const shootData = shoots[shootDate]
-            const dateTime = shootDate.split(", ")
+        if (shoots) {
+            for (const shootDate of Object.keys(shoots)) {
+                const shootData = shoots[shootDate]
+                const dateTime = shootDate.split(", ")
 
-            innerString += `
-                <tr>
-                    <td>${dateTime[0]}</td>
-                    <td>${dateTime[1]}</td>
-                    <td>${shootData.x}</td>
-                    <td>${shootData.y}</td>
-                    <td>${shootData.r}</td>
-                    <td>${shootData.isHit ? '<p class="hit-true">Попадание</p>' : '<p class="hit-false">Промах</p>'}</td>
-                </tr>
-            `
+                innerString += `
+                    <tr class="shoot-tr">
+                        <td>${dateTime[0]}</td>
+                        <td>${dateTime[1]}</td>
+                        <td>${shootData.x}</td>
+                        <td>${shootData.y}</td>
+                        <td>${shootData.r}</td>
+                        <td>${shootData.isHit ? '<p class="hit-true">Попадание</p>' : '<p class="hit-false">Промах</p>'}</td>
+                    </tr>
+                `
+                counter++
+            }
         }
-
-        shootList.innerHTML = innerString
+        
+        if (counter < 7) {
+            innerString += `
+            <tr class="shoot-tr">
+                <td colspan="6" empty>0</td>
+            </tr>
+        `.repeat(7 - counter)
+        }
+            
+        this.shootList.innerHTML = innerString
+        
     }
 
     constructor(canvasObj) {
         this.canvasGraphics = canvasObj
+
+        this.shootList = document.querySelector(this.selectors.tableBody)
+
+        // this.fillEmpty()
         this.update()
     }
 }

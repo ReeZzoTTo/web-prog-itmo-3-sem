@@ -200,10 +200,6 @@
             border-style: solid;
         }
 
-        #shoots-table tbody td {
-            background: #D8E6F3;
-        }
-
         #shoots-table thead th {
             background-color: var(--light-blue-color);
         }
@@ -212,12 +208,28 @@
             color: var(--dark-blue-color);
         }
 
+        .shoot-tr td {
+            background: #D8E6F3;
+            padding: 13px !important;
+            font-size: 18px;
+        }
+
         p.hit-true {
             color: rgb(13, 136, 2);
         }
 
         p.hit-false {
             color: rgb(170, 3, 3)
+        }
+
+        p.hit-true,
+        p.hit-false {
+            margin: 0;
+            padding: 0;
+        }
+
+        [empty] {
+            color:transparent;
         }
 
     </style>
@@ -314,13 +326,13 @@
                             </tr>
                         </thead>
                         <tbody id="shoot-list">
-                            <tr>
-                                <td>1</td>
-                                <td>2</td>
-                                <td>2</td>
-                                <td>2</td>
-                                <td>2</td>
-                                <td>2</td>
+                            <tr class="shoot-tr">
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                             </tr>
                         </tbody>
                     </table>
