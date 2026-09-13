@@ -468,8 +468,26 @@ class ShootsTable {
 
         this.shootList = document.querySelector(this.selectors.tableBody)
 
-        // this.fillEmpty()
         this.update()
+    }
+}
+
+class ButtonHandler {
+    selectors = {
+        clearButton: ".clear-button"
+    }
+
+    bindEvents() {
+        const clearButton = document.querySelector(this.selectors.clearButton)
+
+        clearButton.addEventListener("click", (event) => {
+            this.shootsTable.clear()
+        })
+    }
+
+    constructor(shootsTable) {
+        this.shootsTable = shootsTable
+        this.bindEvents()
     }
 }
 
@@ -490,7 +508,7 @@ class App {
         const shootsTable = new ShootsTable(canvasGraphics)
         const formValidation = new FormValidation(canvasGraphics, shootsTable)
         const selectionR = new SelectionR()
-        
+        new ButtonHandler(shootsTable)
 
     }    
 }
