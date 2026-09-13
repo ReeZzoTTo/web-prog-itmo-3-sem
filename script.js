@@ -334,9 +334,10 @@ class FormValidation {
             event.preventDefault()
             firstInvalidElement.focus()
         } else {
+            const timestamp = Date.now()
+
             const formState = {
-                date: null,
-                time: null,
+                timestamp: timestamp,
                 x: target.coordinate__x.value,
                 y: target.coordinate__y.value,
                 r: btnRList[0].value,
@@ -345,17 +346,17 @@ class FormValidation {
 
             formState.isHit = this.canvasGraphics.shoot(formState)
 
-            const date = new Date()
+            // const date = new Date()
 
-            formState.date = date.toLocaleDateString()
-            formState.time = date.toLocaleTimeString()
+            // formState.date = date.toLocaleDateString("ru-RU")
+            // formState.time = date.toLocaleTimeString("ru-RU")
 
             let currentShootsState = JSON.parse(localStorage.getItem(this.storageKey))
             
             if (!currentShootsState) {
                 currentShootsState = {}
             }
-            currentShootsState[date.toLocaleString()] = formState
+            currentShootsState[formState.timestamp] = formState
             
             if (Object.keys(currentShootsState).length >= 8) {
                 const firstElId = Object.keys(currentShootsState)[0]
@@ -424,24 +425,27 @@ class ShootsTable {
         let counter = 0
 
         if (shoots) {
-            for (const shootDate of Object.keys(shoots)) {
-                const shootData = shoots[shootDate]
-                const dateTime = shootDate.split(", ")
+            for (const timestamp of Object.keys(shoots)) {
+                const shootData = shoots[timestamp]
+                const date = new Date(+timestamp)
 
                 innerString += `
                     <tr class="shoot-tr">
-                        <td>${dateTime[0]}</td>
-                        <td>${dateTime[1]}</td>
+                        <td>${date.toLocaleDateString("ru-RU")}</td>
+                        <td>${date.toLocaleTimeString("ru-RU")}</td>
                         <td>${shootData.x}</td>
                         <td>${shootData.y}</td>
                         <td>${shootData.r}</td>
-                        <td>${shootData.isHit ? '<p class="hit-true">Попадание</p>' : '<p class="hit-false">Промах</p>'}</td>
+                        <td>${shootData.isHit 
+                            ? '<p class="hit-true">Попадание</p>' 
+                            : '<p class="hit-false">Промах</p>'}
+                        </td>
                     </tr>
                 `
                 counter++
             }
         }
-        
+
         if (counter < 7) {
             innerString += `
             <tr class="shoot-tr">
@@ -452,6 +456,11 @@ class ShootsTable {
             
         this.shootList.innerHTML = innerString
         
+    }
+
+    clear() {
+        localStorage.removeItem(this.storageKey)
+        this.update()
     }
 
     constructor(canvasObj) {
