@@ -264,9 +264,12 @@ class FormValidation {
         buttonSelect: "Необходимо выбрать одно из значений от 1 до 5"
     }
 
-    constructor(canvasObj) {
+    storageKey = "shoots"
+
+    constructor(canvasObj, shootsTableControl) {
         this.shootForm = document.forms.shoot__form
         this.canvasGraphics = canvasObj
+        this.shootsTableControler = shootsTableControl
         this.bindEvents()
     }
 
@@ -298,9 +301,14 @@ class FormValidation {
         const requiredControlElements = [...this.shootForm.elements]
             .filter(({ required }) => required)
         let isFormValid = true
+        let firstInvalidElement = null
 
         requiredControlElements.forEach((element) => {
             const isFieldValid = this.validateField(element)
+
+            if (!firstInvalidElement && !isFieldValid) {
+                firstInvalidElement = element
+            }
 
             if (!isFieldValid) {
                 isFormValid = false
@@ -324,9 +332,11 @@ class FormValidation {
 
         if (!isFormValid) {
             event.preventDefault()
-            } else {
-
+            firstInvalidElement.focus()
+        } else {
             const formState = {
+                date: null,
+                time: null,
                 x: target.coordinate__x.value,
                 y: target.coordinate__y.value,
                 r: btnRList[0].value,
@@ -335,11 +345,23 @@ class FormValidation {
 
             formState.isHit = this.canvasGraphics.shoot(formState)
 
-            console.log(formState);
+            const date = new Date()
 
-            event.preventDefault()
+            formState.date = date.toLocaleDateString()
+            formState.time = date.toLocaleTimeString()
+
+            let currentShootsState = JSON.parse(localStorage.getItem(this.storageKey))
+            
+            if (!currentShootsState) {
+                currentShootsState = {}
+            }
+            currentShootsState[date.toLocaleString()] = formState
+            console.log(currentShootsState);
+            
+            localStorage.setItem(this.storageKey, JSON.stringify(currentShootsState))
+
+            this.shootsTableControler.update(formState)
         }
-        event.preventDefault()
     }
 
     manageErrors(fieldControlElement, errorMessages) {
@@ -376,10 +398,50 @@ class FormValidation {
         this.manageErrors(fieldControlElement, errorMessages)
 
         return isValid
+    }
+}
 
+class ShootsTable {
+    selectors = {
+        tableBody: "#shoot-list"
     }
 
-    
+    storageKey = "shoots"
+
+    render(x, y, r) {
+        this.canvasGraphics.drawShoot(x, y, r)
+    }
+
+    update() {
+        const shootList = document.querySelector(this.selectors.tableBody)
+        const shoots = JSON.parse(
+            localStorage.getItem(this.storageKey)
+        )
+        let innerString = ""
+
+        for (const shootDate of Object.keys(shoots)) {
+            const shootData = shoots[shootDate]
+            const dateTime = shootDate.split(", ")
+
+            innerString += `
+                <tr>
+                    <td>${dateTime[0]}</td>
+                    <td>${dateTime[1]}</td>
+                    <td>${shootData.x}</td>
+                    <td>${shootData.y}</td>
+                    <td>${shootData.r}</td>
+                    <td>${shootData.isHit ? '<p class="hit-true">Попадание</p>' : '<p class="hit-false">Промах</p>'}</td>
+                </tr>
+            `
+        }
+
+        shootList.innerHTML = innerString
+    }
+
+    constructor(canvasObj) {
+        this.canvasGraphics = canvasObj
+        this.update()
+    }
 }
 
 class App {
@@ -396,8 +458,10 @@ class App {
 
     main() {
         const canvasGraphics = new CanvasGraphics()
-        const formValidation = new FormValidation(canvasGraphics)
+        const shootsTable = new ShootsTable(canvasGraphics)
+        const formValidation = new FormValidation(canvasGraphics, shootsTable)
         const selectionR = new SelectionR()
+        
 
     }    
 }
