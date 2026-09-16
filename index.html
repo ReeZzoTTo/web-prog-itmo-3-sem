@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Веб-программирование | ЛР №1</title>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Sen:wght@400..800&display=swap');
@@ -60,7 +60,7 @@
         #main-table {
             table-layout: fixed;
             width: 100%;
-            /* border: black 1px solid; */
+            border-collapse: collapse;
         }
 
         #main-table .main-thead {
@@ -77,7 +77,6 @@
         .main-tr td {
             width: min-content;
             padding: 15px;
-            /* border: 1px solid black; */
         }
 
         .main-tr td:first-child {
@@ -86,6 +85,7 @@
 
         .main-tr td:nth-child(2) {
             text-align: center;
+            border-inline: 1px solid white;
         }
 
         .main-tr td:last-child {
@@ -303,8 +303,6 @@
                                     <li><button name="btn-R-field" type="button" class="button-R" value="4">4</button></li>
                                     <li><button name="btn-R-field" type="button" class="button-R" value="5">5</button></li>
                                 </ul>
-                                <!-- <input type="hidden" id="select-r" name="selection-r" aria-errormessage="select-r-errors" required> -->
-                                <!-- <br> -->
                                 <div class="field__errors" id="select-r-errors" data-js-form-field-errors></div>
                             </div>
 
@@ -334,14 +332,7 @@
                             </tr>
                         </thead>
                         <tbody id="shoot-list">
-                            <tr class="shoot-tr">
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
+                            
                         </tbody>
                     </table>
                 </td>

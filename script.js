@@ -41,7 +41,7 @@ class CanvasGraphics {
         this.drawXYEndings()
     }
 
-    drawShoot = (x, y, r) => {
+    drawShoot(x, y, r) {
         const dotMultiplier = this.radius / r
 
         x = this.axisXPos + x * dotMultiplier
@@ -71,7 +71,7 @@ class CanvasGraphics {
         return true
     }
 
-    drawXYEndings = () => {
+    drawXYEndings() {
         this.ctx.beginPath()
         
         this.ctx.moveTo(this.canvasWidth - 10, this.axisYPos - 5)
@@ -95,7 +95,7 @@ class CanvasGraphics {
         this.ctx.closePath()
     }
 
-    drawMainAxis = () => {
+    drawMainAxis() {
         this.ctx.beginPath()
 
         this.ctx.fillStyle = this.colors.black
@@ -109,17 +109,17 @@ class CanvasGraphics {
         this.ctx.closePath()
     }
 
-    drawAxisPointX = (x, y) => {
+    drawAxisPointX(x, y) {
         this.ctx.moveTo(x, y - 5)
         this.ctx.lineTo(x, y + 5)
     }
 
-    drawAxisPointY = (x, y) => {
+    drawAxisPointY(x, y) {
         this.ctx.moveTo(x - 5, y)
         this.ctx.lineTo(x + 5, y)
     }
 
-    drawRect = () => {
+    drawRect() {
         this.ctx.beginPath()
 
         this.ctx.fillStyle = this.colors.lightBlue
@@ -129,7 +129,7 @@ class CanvasGraphics {
         this.ctx.closePath()
     }
 
-    drawTriangle = () => {
+    drawTriangle() {
         this.ctx.beginPath()
 
         this.ctx.fillStyle = this.colors.lightBlue
@@ -143,7 +143,7 @@ class CanvasGraphics {
         this.ctx.fill()
     }
 
-    drawCircle = () => {
+    drawCircle() {
         this.ctx.fillStyle = this.colors.lightBlue
 
         this.ctx.beginPath()
@@ -156,7 +156,7 @@ class CanvasGraphics {
         this.ctx.closePath()
     }
 
-    initAxisData = (radius) => {
+    initAxisData(radius) {
         const axisXPos = this.canvasWidth / 2
         const axisYPos = this.canvasHeight / 2
 
@@ -168,7 +168,7 @@ class CanvasGraphics {
         this.axisYPos = axisYPos
     }
 
-    drawAxisPoints = () => {
+    drawAxisPoints() {
         const startingCoordX = this.axisXPos - this.radius
         const startingCoordY = this.axisYPos - this.radius
 
@@ -187,14 +187,14 @@ class CanvasGraphics {
 
     }
 
-    drawArea = () => {
+    drawArea() {
         this.drawRect()
         this.drawTriangle()
         this.drawCircle()
         this.drawAxisPoints()
     }
 
-    drawNumbers = () => {
+    drawNumbers() {
         const startingCoordX = this.axisXPos - this.radius
         const startingCoordY = this.axisYPos - this.radius
 
@@ -346,11 +346,6 @@ class FormValidation {
 
             formState.isHit = this.canvasGraphics.shoot(formState)
 
-            // const date = new Date()
-
-            // formState.date = date.toLocaleDateString("ru-RU")
-            // formState.time = date.toLocaleTimeString("ru-RU")
-
             let currentShootsState = JSON.parse(localStorage.getItem(this.storageKey))
             
             if (!currentShootsState) {
@@ -369,18 +364,13 @@ class FormValidation {
         }
     }
 
-    manageErrors(fieldControlElement, errorMessages) {
-        console.log(fieldControlElement.validity);
-        
+    manageErrors(fieldControlElement, errorMessages) {      
         const errorsId = fieldControlElement.getAttribute("aria-errormessage")
         const fieldErrorsElement = document.getElementById(errorsId)
-        
-        console.log(fieldControlElement.parentElement)
 
         fieldErrorsElement.innerHTML = errorMessages
             .map((message) => `<span class="field__error">${message}</span>`)
             .join('')
-    
     }
 
     validateField(fieldControlElement) {
@@ -412,10 +402,6 @@ class ShootsTable {
     }
 
     storageKey = "shoots"
-
-    render(x, y, r) {
-        this.canvasGraphics.drawShoot(x, y, r)
-    }
 
     update() {
         const shoots = JSON.parse(
@@ -492,13 +478,6 @@ class ButtonHandler {
 }
 
 class App {
-    state = {
-        x: null,
-        y: null,
-        r: null,
-    }
-    shoots = []
-
     constructor() {
         this.main()
     }
@@ -506,8 +485,8 @@ class App {
     main() {
         const canvasGraphics = new CanvasGraphics()
         const shootsTable = new ShootsTable(canvasGraphics)
-        const formValidation = new FormValidation(canvasGraphics, shootsTable)
-        const selectionR = new SelectionR()
+        new FormValidation(canvasGraphics, shootsTable)
+        new SelectionR()
         new ButtonHandler(shootsTable)
 
     }    
