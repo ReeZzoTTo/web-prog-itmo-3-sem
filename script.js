@@ -337,7 +337,10 @@ class FormValidation {
 
         if (!isFormValid) {
             event.preventDefault()
-            firstInvalidElement.focus()
+
+            if(firstInvalidElement) {
+                firstInvalidElement.focus()
+            }        
         } else {
             const timestamp = Date.now()
 
@@ -499,9 +502,9 @@ class App {
 
 new App()
 
-// TODO : Табличную верстку переделать под Grid-Layout
+// * TODO : Табличную верстку переделать под Grid-Layout 
 // TODO : Подумать насчет async-await и обработки на сервере
-// TODO : Разобраться с каким-то url-ом в devTools
-// TODO : Как будто бы полностью переделать CSS --> посмотреть видосы про правильную верстку и про линтеры
+// * TODO : Разобраться с каким-то url-ом в devTools
+// * TODO : Как будто бы полностью переделать CSS --> посмотреть видосы про правильную верстку и про линтеры
 // TODO : Поработать с LESS & SASS, SCSS
 // TODO : Добавить TypeScript
