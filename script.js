@@ -398,7 +398,7 @@ class FormValidation {
 
 class ShootsTable {
     selectors = {
-        tableBody: "#shoot-list"
+        tableBody: "[data-js-shoot-list]"
     }
 
     storageKey = "shoots"
