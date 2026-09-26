@@ -6,7 +6,8 @@ class CanvasGraphics {
     colors = {
         lightBlue: "#4eacfa",
         black: "#000000",
-        shootColor: "#8b0000"
+        shootColorMiss: "#8b0000",
+        shootColorHit: "#0c8b00"
     }
 
     constructor() {
@@ -27,9 +28,11 @@ class CanvasGraphics {
 
     shoot({x, y, r}) {
         this.render()
-        this.drawShoot(x, y, r)
+        const isHit = this.checkShoot(x, y, r)
+
+        this.drawShoot(x, y, r, isHit)
         
-        return this.checkShoot(x, y, r)
+        return isHit
     }
 
     render() {
@@ -41,14 +44,16 @@ class CanvasGraphics {
         this.drawXYEndings()
     }
 
-    drawShoot(x, y, r) {
+    drawShoot(x, y, r, isHit) {
         const dotMultiplier = this.radius / r
 
         x = this.axisXPos + x * dotMultiplier
         y = this.axisYPos - y * dotMultiplier        
 
         this.ctx.beginPath()
-        this.ctx.fillStyle = this.colors.shootColor
+        this.ctx.fillStyle = isHit 
+            ? this.colors.shootColorHit 
+            : this.colors.shootColorMiss
 
         this.ctx.arc(x, y, 4, 0, 2 * Math.PI)
         this.ctx.fill()
