@@ -21,7 +21,7 @@ class CanvasGraphics {
     }
 
     fillBackground() {
-        this.ctx.fillStyle = "#dadada"
+        this.ctx.fillStyle = "#f0f0f0"
         this.ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight)
     }
 
@@ -321,7 +321,7 @@ class FormValidation {
         )
 
         let isButtonSelected = btnRList.length > 0
-        const buttonErrorField = document.querySelector("#select-r-errors")
+        const buttonErrorField = document.querySelector("[data-js-select-r-errors]")
 
         if (!isButtonSelected) {
             isFormValid = false

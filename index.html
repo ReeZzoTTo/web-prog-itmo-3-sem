@@ -68,11 +68,11 @@
                             <li><button name="btn-R-field" type="button" class="button-R" value="4">4</button></li>
                             <li><button name="btn-R-field" type="button" class="button-R" value="5">5</button></li>
                         </ul>
-                        <div class="field__errors" id="select-r-errors" data-js-form-field-errors></div>
+                        <div class="field__errors" data-js-form-field-errors data-js-select-r-errors></div>
                     </div>
 
-                    <div id="btn-shoot-wrapper">
-                        <button type="submit">ВЫСТРЕЛ!</button>
+                    <div class="btn-shoot-wrapper">
+                        <button type="submit" class="button-shoot">ВЫСТРЕЛ!</button>
                     </div>
 
                 </fieldset>
@@ -85,8 +85,8 @@
 
         <section class="main-section">
             <table class="shoots-table">
-                <thead>
-                    <tr>
+                <thead class="shoot-table-header">
+                    <tr class="shoot-table-row">
                         <th>Дата</th>
                         <th>Время</th>
                         <th>X</th>
