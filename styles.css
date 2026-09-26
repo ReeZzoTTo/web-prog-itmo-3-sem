@@ -6,7 +6,60 @@
     --dark-blue-color-2: rgb(0, 27, 58);
     --light-blue-color: #81b3ff;
     --sky-blue-color: #a2c7ff;
+    --header-background-color: #7dc4ff;
 }
+
+.header {
+    display: grid;
+    grid-template-columns: repeat(3, 25%);
+    justify-content: space-between;
+    column-gap: 50px;
+    font-size: 26px;
+    padding: 15px 50px;
+    background-color: var(--header-background-color);
+}
+
+.header-data:first-child {
+    text-align: left;
+}
+
+.header-data:nth-child(2) {
+    text-align: center;
+}
+
+.header-data:last-child {
+    text-align: right;
+}
+
+p {
+  margin: 0;  
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 body {
     margin: 0;
