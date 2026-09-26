@@ -1,0 +1,5 @@
+#canvas-graphics - это <canvas >
+.button-R - кнопка для радиуса
+#select-r-errors - ошибки для кнопок радиуса
+#shoot-list - таблица выстрелов
+.clear-button - кнопка очистки
