@@ -236,3 +236,7 @@ p.hit-false {
 [empty] {
     color:transparent;
 }
+
+.shoot-list tr td {
+    text-align: center;
+}
