@@ -38,7 +38,7 @@ class CanvasGraphics {
         this.ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
     }
     shoot({ x, y, r }) {
-        this.render();
+        // this.render()
         const isHit = this.checkShoot(x, y, r);
         this.drawShoot(x, y, r, isHit);
         return isHit;
@@ -59,6 +59,7 @@ class CanvasGraphics {
         this.ctx.fillStyle = isHit
             ? this.colors.shootColorHit
             : this.colors.shootColorMiss;
+        this.ctx.moveTo(x, y);
         this.ctx.arc(x, y, 4, 0, 2 * Math.PI);
         this.ctx.fill();
         this.ctx.closePath();
@@ -300,7 +301,7 @@ class FormValidation {
                 r: Number(btnRList[0].value),
                 isHit: false
             };
-            formState.isHit = this.canvasGraphics.shoot(formState);
+            formState.isHit = this.canvasGraphics.checkShoot(formState.x, formState.y, formState.r);
             const localStorageShootsItem = localStorage.getItem(this.storageKey);
             let currentShootsState = {};
             if (localStorageShootsItem) {
@@ -309,11 +310,20 @@ class FormValidation {
             if (!currentShootsState) {
                 currentShootsState = {};
             }
+            this.canvasGraphics.render();
             currentShootsState[formState.timestamp] = formState;
-            if (Object.keys(currentShootsState).length >= 8) {
-                const firstElId = Object.keys(currentShootsState)[0];
-                delete currentShootsState[firstElId];
+            for (const curShootData of Object.keys(currentShootsState)) {
+                // if (curShootData === String(formState.timestamp)) {
+                //     continue
+                // }
+                const curX = Number(currentShootsState[curShootData].x);
+                const curY = Number(currentShootsState[curShootData].y);
+                this.canvasGraphics.shoot({ x: curX, y: curY, r: formState.r });
             }
+            // if (Object.keys(currentShootsState).length >= 8) {
+            //     const firstElId = Object.keys(currentShootsState)[0]
+            //     delete currentShootsState[firstElId]
+            // }
             localStorage.setItem(this.storageKey, JSON.stringify(currentShootsState));
             this.shootsTableControler.update();
         }

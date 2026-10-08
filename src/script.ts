@@ -77,7 +77,7 @@ class CanvasGraphics {
     }
 
     shoot({x, y, r}: Coordinates): boolean {
-        this.render()
+        // this.render()
         const isHit = this.checkShoot(x, y, r)
 
         this.drawShoot(x, y, r, isHit)
@@ -105,6 +105,7 @@ class CanvasGraphics {
             ? this.colors.shootColorHit 
             : this.colors.shootColorMiss
 
+        this.ctx.moveTo(x, y)
         this.ctx.arc(x, y, 4, 0, 2 * Math.PI)
         this.ctx.fill()
 
@@ -426,7 +427,7 @@ class FormValidation {
                 isHit: false
             }
 
-            formState.isHit = this.canvasGraphics.shoot(formState)
+            formState.isHit = this.canvasGraphics.checkShoot(formState.x, formState.y, formState.r)
             
             const localStorageShootsItem = localStorage.getItem(this.storageKey)
             let currentShootsState: ShootsState = {}
@@ -438,13 +439,17 @@ class FormValidation {
             if (!currentShootsState) {
                 currentShootsState = {}
             }
+
+            this.canvasGraphics.render()
             currentShootsState[formState.timestamp] = formState
-            
-            if (Object.keys(currentShootsState).length >= 8) {
-                const firstElId = Object.keys(currentShootsState)[0]
-                delete currentShootsState[firstElId]
+
+            for (const curShootData of Object.keys(currentShootsState)) {
+                const curX = Number(currentShootsState[curShootData].x)
+                const curY = Number(currentShootsState[curShootData].y)
+
+                this.canvasGraphics.shoot({x: curX, y: curY, r: formState.r})
             }
-            
+
             localStorage.setItem(this.storageKey, JSON.stringify(currentShootsState))
 
             this.shootsTableControler.update()
