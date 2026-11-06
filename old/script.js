@@ -27,7 +27,7 @@ class CanvasGraphics {
     }
 
     shoot({x, y, r}) {
-        this.render()
+        // this.render()
         const isHit = this.checkShoot(x, y, r)
 
         this.drawShoot(x, y, r, isHit)
@@ -308,20 +308,20 @@ class FormValidation {
         let isFormValid = true
         let firstInvalidElement = null
 
-        requiredControlElements.forEach((element) => {
+        for (const element of requiredControlElements) {
             const isFieldValid = this.validateField(element)
-
-            if (!firstInvalidElement && !isFieldValid) {
-                firstInvalidElement = element
-            }
 
             if (!isFieldValid) {
                 isFormValid = false
+
+                if (!firstInvalidElement) {
+                    firstInvalidElement = element
+                }
             }
-        })
+        }
 
         const btnRElements = document.querySelectorAll(".button-R")
-        const btnRList = [...btnRElements]
+        const btnRList = Array.from(btnRElements)
             .filter((button) => button.classList.contains("btn-active")
         )
 
@@ -348,24 +348,33 @@ class FormValidation {
                 timestamp: timestamp,
                 x: target.coordinate__x.value,
                 y: target.coordinate__y.value,
-                r: btnRList[0].value,
-                isHit: null
+                r: Number(btnRList[0].value),
+                isHit: false
             }
 
-            formState.isHit = this.canvasGraphics.shoot(formState)
+            formState.isHit = this.canvasGraphics.checkShoot(formState.x, formState.y, formState.r)
 
-            let currentShootsState = JSON.parse(localStorage.getItem(this.storageKey))
+            const localStorageShootsItem = localStorage.getItem(this.storageKey)
+            let currentShootsState = {}
             
+            if (localStorageShootsItem) {
+                currentShootsState = JSON.parse(localStorageShootsItem)
+            }
+
             if (!currentShootsState) {
                 currentShootsState = {}
             }
+
+            this.canvasGraphics.render()
             currentShootsState[formState.timestamp] = formState
             
-            if (Object.keys(currentShootsState).length >= 8) {
-                const firstElId = Object.keys(currentShootsState)[0]
-                delete currentShootsState[firstElId]
+            for (const curShootData of Object.keys(currentShootsState)) {
+                const curY = Number(currentShootsState[curShootData].y)
+                const curX = Number(currentShootsState[curShootData].x)
+
+                this.canvasGraphics.shoot({x: curX, y: curY, r: formState.r})
             }
-            
+
             localStorage.setItem(this.storageKey, JSON.stringify(currentShootsState))
 
             this.shootsTableControler.update()
@@ -438,6 +447,8 @@ class ShootsTable {
                 `
                 counter++
             }
+        } else {
+            this.canvasGraphics.render()
         }
 
         if (counter < 7) {
@@ -449,7 +460,6 @@ class ShootsTable {
         }
             
         this.shootList.innerHTML = innerString
-        
     }
 
     clear() {
@@ -502,9 +512,3 @@ class App {
 
 new App()
 
-// * TODO : Табличную верстку переделать под Grid-Layout 
-// TODO : Подумать насчет async-await и обработки на сервере
-// * TODO : Разобраться с каким-то url-ом в devTools
-// * TODO : Как будто бы полностью переделать CSS --> посмотреть видосы про правильную верстку и про линтеры
-// TODO : Поработать с LESS & SASS, SCSS
-// TODO : Добавить TypeScript
