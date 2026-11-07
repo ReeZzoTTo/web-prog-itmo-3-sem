@@ -27,7 +27,6 @@ export class CanvasGraphics {
     }
 
     shoot({x, y, r}) {
-        // this.render()
         const isHit = this.checkShoot(x, y, r)
 
         this.drawShoot(x, y, r, isHit)
@@ -128,7 +127,7 @@ export class CanvasGraphics {
         this.ctx.beginPath()
 
         this.ctx.fillStyle = this.colors.lightBlue
-        this.ctx.fillRect(this.axisXPos, this.axisYPos - this.radius, this.radius, this.radius)
+        this.ctx.fillRect(this.axisXPos - this.radius, this.axisYPos - this.radius / 2, this.radius, this.radius / 2)
 
         this.ctx.stroke()
         this.ctx.closePath()
