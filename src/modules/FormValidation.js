@@ -2,6 +2,7 @@ export class FormValidation {
     selectors = {
         shootForm: "[data-js-shoot-form]",
         fieldErrors: "[data-js-form-field-errors]",
+        radioButton: 'input[name="select-r"]'
     }
 
     errorMessages = {
@@ -26,6 +27,8 @@ export class FormValidation {
     bindEvents() {
         document.addEventListener("blur", (event) => this.onBlur(event), { capture: true })
         document.addEventListener("submit", (event) => this.onSubmit(event))
+        document.addEventListener("change", (event) => this.onChange(event))
+        document.addEventListener("radioRadius", (event) => this.onRadioRadius(event))
     }
     
     onBlur(event) {
@@ -36,6 +39,31 @@ export class FormValidation {
         if (isFormField && isRequired) {
             this.validateField(target)
         }
+    }
+
+    onChange(event) {
+        const { target } = event
+        
+
+        if (target.matches(this.selectors.radioButton)) {
+            target.dispatchEvent(
+                new CustomEvent("radioRadius", {
+                    bubbles: true,
+                    detail: {
+                        value: target.value
+                    }
+                })
+            )
+        }
+    }
+
+    onRadioRadius(event) {
+        this.canvasGraphics.render()
+
+        this.canvasGraphics.traceShoots(
+            JSON.parse(localStorage.getItem(this.storageKey)), 
+            event.detail.value
+        )
     }
 
     onSubmit(event) {

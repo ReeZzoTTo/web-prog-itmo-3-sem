@@ -34,6 +34,17 @@ export class CanvasGraphics {
         return isHit
     }
 
+    traceShoots(shoots, lastSavedRadius) {
+        for (const shoot of Object.values(shoots)) {   
+            this.drawShoot(
+                shoot.x,
+                shoot.y,
+                lastSavedRadius,
+                this.checkShoot(shoot.x, shoot.y, lastSavedRadius)
+            )
+        }
+    }
+
     render() {
         this.fillBackground()
         this.initAxisData(180)
