@@ -111,17 +111,30 @@ button {
     font-size: 20px;
 }  
 
-.button-R-list {
+.radio-list {
     list-style: none;
-    margin-top: 10px;
-    padding: 0;
     display: flex;
     justify-content: space-between;
+    padding: 0;
+    margin-top: 0;
+    font-size: 20px;
 }
 
-.button-R {
+.button-X-list {
+    list-style: none;
+    margin-block: 10px 20px;
+    padding: 0;
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    column-gap: 25px;
+    row-gap: 10px;
+}
+
+.button-X {
     padding-inline: 25px;
     font-size: 24px;
+    border: 1px solid transparent;
 }
 
 .btn-shoot-wrapper,
@@ -171,10 +184,6 @@ button:hover {
     transform: scale(1.1);
     box-shadow: 0px 8px 10px rgba(0,0,0,0.15);
     background-color: #a2c7ff
-}
-
-.button-R {
-    border: 1px solid transparent;
 }
 
 .btn-active {

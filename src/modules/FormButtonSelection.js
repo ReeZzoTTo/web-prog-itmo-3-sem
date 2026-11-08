@@ -1,6 +1,6 @@
 export class FormButtonSelection {
     selectors = {
-        buttonR: ".button-R"
+        buttonX: ".button-X"
     }
     activeClass = "btn-active"
 
@@ -15,8 +15,8 @@ export class FormButtonSelection {
     onButtonClick(event) {
         const { target } = event
 
-        if (target.matches(this.selectors.buttonR)) {
-            const buttonList = document.querySelectorAll(this.selectors.buttonR)
+        if (target.matches(this.selectors.buttonX)) {
+            const buttonList = document.querySelectorAll(this.selectors.buttonX)
             const wasActive = target.classList.contains(this.activeClass)
 
             buttonList.forEach(element => {

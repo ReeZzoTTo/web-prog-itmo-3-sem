@@ -10,8 +10,8 @@ export class FormValidation {
     }
 
     customErrorMessages = {
-        numberInvalid:"Диапазон числа: [-5; 3]",
-        buttonSelect: "Необходимо выбрать одно из значений от 1 до 5"
+        numberInvalid:"Диапазон числа: [-5; 5]",
+        buttonSelect: "Необходимо выбрать одно из значений от -4 до 4"
     }
 
     storageKey = "shoots"
@@ -65,13 +65,14 @@ export class FormValidation {
             }
         }
 
-        const btnRElements = document.querySelectorAll(".button-R")
-        const btnRList = Array.from(btnRElements)
+        const btnXElements = document.querySelectorAll(".button-X")
+        
+        const btnXList = Array.from(btnXElements)
             .filter((button) => button.classList.contains("btn-active")
         )
 
-        let isButtonSelected = btnRList.length > 0
-        const buttonErrorField = document.querySelector("[data-js-select-r-errors]")
+        let isButtonSelected = btnXList.length > 0
+        const buttonErrorField = document.querySelector("[data-js-select-x-errors]")
 
         if (!isButtonSelected) {
             isFormValid = false
@@ -91,9 +92,9 @@ export class FormValidation {
 
             const formState = {
                 timestamp: timestamp,
-                x: target.coordinate__x.value,
+                x: Number(btnXList[0].value),
                 y: target.coordinate__y.value,
-                r: Number(btnRList[0].value),
+                r: target["select-r"].value,
                 isHit: false
             }
 
@@ -140,7 +141,7 @@ export class FormValidation {
         const errorMessages = []
         const value = Number(fieldControlElement.value)
 
-        if (fieldControlElement.name === "coordinate__y" && (value < -5 || value > 3)) {
+        if (fieldControlElement.name === "coordinate__y" && (value < -5 || value > 5)) {
             errorMessages.push(this.customErrorMessages.numberInvalid)
         }
 

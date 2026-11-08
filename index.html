@@ -22,28 +22,25 @@
                 <fieldset class="shoot-form-fieldset">
                     <legend class="shoot-form-legend">Параметры выстрела</legend>
                     
-                    <p class="field">
-                        <label for="select-x" class="field-label">Изменение X:</label>
-                        <select 
-                            class="select-x"
-                            name="coordinate__x" 
-                            id="select-x" 
-                            aria-errormessage="select-x-errors"
-                            required
-                        >
-                            <option class="option-x" value="" disabled selected></option>
-                            <option class="option-x" value="-3">-3</option>
-                            <option class="option-x" value="-2">-2</option>
-                            <option class="option-x" value="-1">-1</option>
-                            <option class="option-x" value="0">0</option>
-                            <option class="option-x" value="1">1</option>
-                            <option class="option-x" value="2">2</option>
-                            <option class="option-x" value="3">3</option>
-                            <option class="option-x" value="4">4</option>
-                            <option class="option-x" value="5">5</option>
-                        </select>
-                        <span id="select-x-errors" class="field__errors" data-js-form-field-errors></span>
-                    </p>
+                    <div class="field">
+
+                        <label class="field-label">Изменение X:</label>
+
+                        <ul class="button-X-list">
+                            <li><button type="button" id="button-x" class="button-X" value="-4">-4</button></li>
+                            <li><button type="button" id="button-x" class="button-X" value="-3">-3</button></li>
+                            <li><button type="button" id="button-x" class="button-X" value="-2">-2</button></li>
+                            <li><button type="button" id="button-x" class="button-X" value="-1">-1</button></li>
+                            <li><button type="button" id="button-x" class="button-X" value="0">0</button></li>
+                            <li><button type="button" id="button-x" class="button-X" value="1">1</button></li>
+                            <li><button type="button" id="button-x" class="button-X" value="2">2</button></li>
+                            <li><button type="button" id="button-x" class="button-X" value="3">3</button></li>
+                            <li><button type="button" id="button-x" class="button-X" value="4">4</button></li>
+                        </ul>
+                        <div class="field__errors" data-js-form-field-errors data-js-select-x-errors>
+                            
+                        </div>
+                    </div>
 
                     <p class="field">
                         <label for="select-y" class="field-label">Изменение Y:</label>
@@ -51,7 +48,7 @@
                             type="text" 
                             id="select-y"
                             name="coordinate__y"
-                            pattern="-?[0-9]+"
+                            pattern="-?[0-9]*\.?[0-9]+"
                             title="Указанное значение должно быть числом"
                             aria-errormessage="select-y-errors"
                             required   
@@ -59,17 +56,35 @@
                         <span id="select-y-errors" class="field__errors" data-js-form-field-errors></span>
                     </p>
 
-                    <div class="field">
+                    <p class="field">
+
                         <label class="field-label">Изменение R:</label>
-                        <ul class="button-R-list">
-                            <li><button type="button" id="button-r" class="button-R" value="1">1</button></li>
-                            <li><button name="btn-R-field" type="button" class="button-R" value="2">2</button></li>
-                            <li><button name="btn-R-field" type="button" class="button-R" value="3">3</button></li>
-                            <li><button name="btn-R-field" type="button" class="button-R" value="4">4</button></li>
-                            <li><button name="btn-R-field" type="button" class="button-R" value="5">5</button></li>
+                        
+                        <ul class="radio-list">
+                            <li>
+                                <input type="radio" name="select-r" id="r-1" value="1">
+                                <label for="r-1">1</label>
+                            </li>
+                            <li>
+                                <input type="radio" name="select-r" id="r-1.5" value="1.5">
+                                <label for="r-1.5">1.5</label>
+                            </li>
+                            <li>
+                                <input type="radio" name="select-r" id="r-2" value="2">
+                                <label for="r-2">2</label>
+                            </li>
+                            <li>
+                                <input type="radio" name="select-r" id="r-2.5" value="2.5">
+                                <label for="r-2.5">2.5</label>
+                            </li>
+                            <li>
+                                <input type="radio" name="select-r" id="r-3" value="3" checked>
+                                <label for="r-3">3</label>
+                            </li>
+
                         </ul>
-                        <div class="field__errors" data-js-form-field-errors data-js-select-r-errors></div>
-                    </div>
+                        
+                    </p>
 
                     <div class="btn-shoot-wrapper">
                         <button type="submit" class="button-shoot">ВЫСТРЕЛ!</button>
@@ -108,12 +123,12 @@
 
     </main>
 
-    <script src="./src/modules/ButtonHandler.js"></script>
-    <script src="./src/modules/CanvasGraphics.js"></script>
-    <script src="./src/modules/FormButtonSelection.js"></script>
-    <script src="./src/modules/FormValidation.js"></script>
-    <script src="./src/modules/ShootsTable.js"></script>
-    <script src="./src/index.js"></script>
+    <script src="./src/modules/ButtonHandler.js" type="module"></script>
+    <script src="./src/modules/CanvasGraphics.js" type="module"></script>
+    <script src="./src/modules/FormButtonSelection.js" type="module"></script>
+    <script src="./src/modules/FormValidation.js" type="module"></script>
+    <script src="./src/modules/ShootsTable.js" type="module"></script>
+    <script src="./src/index.js" type="module" type="module"></script>
 
     <script src="./src/script.js" type="module"></script>
 
