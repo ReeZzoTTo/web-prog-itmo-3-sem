@@ -5,6 +5,17 @@ export class ShootsTable {
 
     storageKey = "shoots"
 
+    traceShoots(shoots, lastSavedRadius) {
+        for (const shoot of Object.values(shoots)) {            
+            this.canvasGraphics.drawShoot(
+                shoot.x,
+                shoot.y,
+                lastSavedRadius,
+                shoot.isHit
+            )
+        }
+    }
+
     update() {
         const shoots = JSON.parse(
             localStorage.getItem(this.storageKey)
@@ -13,6 +24,9 @@ export class ShootsTable {
         let counter = 0
 
         if (shoots) {
+            
+            this.traceShoots(shoots, shoots[Object.keys(shoots).at(-1)].r)
+
             for (const timestamp of Object.keys(shoots)) {
                 const shootData = shoots[timestamp]
                 const date = new Date(+timestamp)
