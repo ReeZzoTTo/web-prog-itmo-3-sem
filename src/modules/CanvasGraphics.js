@@ -140,7 +140,7 @@ export class CanvasGraphics {
 
         this.ctx.moveTo(this.axisXPos, this.axisYPos)
         this.ctx.lineTo(this.axisXPos, this.axisYPos + this.radius)
-        this.ctx.lineTo(this.axisXPos + this.radius, this.axisYPos)
+        this.ctx.lineTo(this.axisXPos - this.radius / 2, this.axisYPos)
         this.ctx.lineTo(this.axisXPos, this.axisYPos)
 
         this.ctx.closePath()
@@ -153,7 +153,7 @@ export class CanvasGraphics {
         this.ctx.beginPath()
 
         this.ctx.moveTo(this.axisXPos, this.axisYPos)
-        this.ctx.arc(this.axisXPos, this.axisYPos, this.radius, Math.PI / 2, Math.PI, false)
+        this.ctx.arc(this.axisXPos, this.axisYPos, this.radius, -Math.PI / 2, 0, false)
 
         this.ctx.fill()
 
