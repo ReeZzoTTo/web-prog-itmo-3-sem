@@ -1,3 +1,5 @@
+import { ShootApi } from "./ShootApi.js"
+
 export class FormValidation {
     selectors = {
         shootForm: "[data-js-shoot-form]",
@@ -21,6 +23,9 @@ export class FormValidation {
         this.shootForm = document.forms.shoot__form
         this.canvasGraphics = canvasObj
         this.shootsTableControler = shootsTableControl
+        
+        this.shootApi = new ShootApi()
+        
         this.bindEvents()
     }
 
@@ -65,7 +70,7 @@ export class FormValidation {
         )
     }
 
-    onSubmit(event) {
+    async onSubmit(event) {
         event.preventDefault()
         const { target } = event
 
@@ -149,6 +154,21 @@ export class FormValidation {
             }
 
             localStorage.setItem(this.storageKey, JSON.stringify(currentShootsState))
+
+            const shoot = {
+                x: x,
+                y: y,
+                r: r
+            }
+
+            try {
+                const responseData = this.shootApi.sendShoot(shoot)
+
+                
+            } catch (error) {
+                console.log("Error: ", error.message)
+            }
+
 
             this.shootsTableControler.update()
         }
