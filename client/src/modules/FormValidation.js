@@ -44,7 +44,6 @@ export class FormValidation {
     onChange(event) {
         const { target } = event
         
-
         if (target.matches(this.selectors.radioButton)) {
             target.dispatchEvent(
                 new CustomEvent("radioRadius", {
