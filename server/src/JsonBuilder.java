@@ -13,8 +13,8 @@ public class JsonBuilder {
             + "\"x\":" + shot.getX() + ","
             + "\"y\":" + shot.getY() + ","
             + "\"r\":" + shot.getR() + ","
-            + "\"isHit\":" + shot.isHit()
-            + "\"timestamp\":" + shot.getTimestamp() + ","
+            + "\"isHit\":" + shot.isHit() + ","
+            + "\"timestamp\":" + shot.getTimestamp()
             + "}";
     }
 
@@ -37,10 +37,20 @@ public class JsonBuilder {
         return json.toString();
     }
 
-    public String buildJsonResponse(Shot shot) {
+    public String buildJsonResponse(Shot shot, String currentTime, double executionTime) {
         return "{"
             + "\"shot\":" + shotToJson(shot) + ","
-            + "\"history\":" + historyToJson()
+            + "\"history\":" + historyToJson() + ","
+            + "\"currentTime\":\"" + currentTime + "\","
+            + "\"executionTimeMs\":" + executionTime
+            + "}";
+    }
+
+    public String buildErrorResponse(String message, String currentTime, double executionTime) {
+        return "{"
+            + "\"error\":\"" + message + "\","
+            + "\"currentTime\":\"" + currentTime + "\","
+            + "\"executionTimeMs\":" + executionTime
             + "}";
     }
 }
