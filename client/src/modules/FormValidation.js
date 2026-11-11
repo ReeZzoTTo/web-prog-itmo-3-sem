@@ -1,10 +1,13 @@
-import { ShootApi } from "./ShootApi.js"
-
 export class FormValidation {
     selectors = {
         shootForm: "[data-js-shoot-form]",
         fieldErrors: "[data-js-form-field-errors]",
         radioButton: 'input[name="select-r"]'
+    }
+
+    formKeys = {
+        y: "coordinate__y",
+        r: "select-r"
     }
 
     errorMessages = {
@@ -19,14 +22,16 @@ export class FormValidation {
 
     storageKey = "shoots"
 
-    constructor(canvasObj, shootsTableControl) {
+    constructor(canvasObj, shootsTableControl, shootApi) {
         this.shootForm = document.forms.shoot__form
         this.canvasGraphics = canvasObj
         this.shootsTableControler = shootsTableControl
-        
-        this.shootApi = new ShootApi()
+        this.shootsHistory = []
+
+        this.shootApi = shootApi
         
         this.bindEvents()
+        this.loadHistory()
     }
 
     bindEvents() {
@@ -36,6 +41,40 @@ export class FormValidation {
         document.addEventListener("radioRadius", (event) => this.onRadioRadius(event))
     }
     
+    async clearHistory() {
+        try {
+            await this.shootApi.clearHistory()
+
+            this.shootsHistory = responseData.history
+
+            this.shootsTableControler.update(this.shootsHistory)
+            this.canvasGraphics.render()
+
+        } catch (error) {
+            console.log("Error with clearing history: ", error.message)
+        }
+    }
+
+    async loadHistory() {
+        try {
+            const responseData = await this.shootApi.getHistory()
+
+            this.shootsHistory = responseData.history
+
+            this.shootsTableControler.update(this.shootsHistory)
+            
+            const selectedRadiusElement = this.shootForm.querySelector(`${this.selectors.radioButton}:checked`)
+
+            this.canvasGraphics.render()
+
+            if (selectedRadiusElement) {
+                this.canvasGraphics.traceShoots(this.shootsHistory, Number(selectedRadiusElement.value))
+            }
+        } catch (error) {
+            console.log("Error with loading history: ", error.message)
+        }
+    }
+
     onBlur(event) {
         const { target } = event
         const isFormField = target.closest(this.selectors.shootForm)
@@ -65,13 +104,13 @@ export class FormValidation {
         this.canvasGraphics.render()
 
         this.canvasGraphics.traceShoots(
-            JSON.parse(localStorage.getItem(this.storageKey)), 
-            event.detail.value
+            this.shootsHistory, 
+            Number(event.detail.value)
         )
     }
 
     async onSubmit(event) {
-        event.preventDefault()
+        
         const { target } = event
 
         const isFormElement = target.matches(this.selectors.shootForm)
@@ -79,6 +118,9 @@ export class FormValidation {
         if (!isFormElement) {
             return
         }
+        
+        event.preventDefault()
+
 
         const requiredControlElements = [...this.shootForm.elements]
             .filter(({ required }) => required)
@@ -120,57 +162,54 @@ export class FormValidation {
                 firstInvalidElement.focus()
             }        
         } else {
-            const timestamp = Date.now()
-
-            const formState = {
-                timestamp: timestamp,
-                x: Number(btnXList[0].value),
-                y: target.coordinate__y.value,
-                r: target["select-r"].value,
-                isHit: false
-            }
-
-            formState.isHit = this.canvasGraphics.checkShoot(formState.x, formState.y, formState.r)
-
-            const localStorageShootsItem = localStorage.getItem(this.storageKey)
-            let currentShootsState = {}
+            // const localStorageShootsItem = localStorage.getItem(this.storageKey)
+            // let currentShootsState = {}
             
-            if (localStorageShootsItem) {
-                currentShootsState = JSON.parse(localStorageShootsItem)
-            }
+            // if (localStorageShootsItem) {
+            //     currentShootsState = JSON.parse(localStorageShootsItem)
+            // }
 
-            if (!currentShootsState) {
-                currentShootsState = {}
-            }
+            // if (!currentShootsState) {
+            //     currentShootsState = {}
+            // }
 
-            this.canvasGraphics.render()
-            currentShootsState[formState.timestamp] = formState
+            // this.canvasGraphics.render()
+            // currentShootsState[formState.timestamp] = formState
             
-            for (const curShootData of Object.keys(currentShootsState)) {
-                const curY = Number(currentShootsState[curShootData].y)
-                const curX = Number(currentShootsState[curShootData].x)
+            // for (const curShootData of Object.keys(currentShootsState)) {
+            //     const curY = Number(currentShootsState[curShootData].y)
+            //     const curX = Number(currentShootsState[curShootData].x)
 
-                this.canvasGraphics.shoot({x: curX, y: curY, r: formState.r})
-            }
+            //     this.canvasGraphics.shoot({x: curX, y: curY, r: formState.r})
+            // }
 
-            localStorage.setItem(this.storageKey, JSON.stringify(currentShootsState))
+            // localStorage.setItem(this.storageKey, JSON.stringify(currentShootsState))
+
+            const formElement = document.querySelector(this.selectors.shootForm)
+            const formData = new FormData(formElement)
+            const formDataObject = Object.fromEntries(formData)
 
             const shoot = {
-                x: x,
-                y: y,
-                r: r
+                x: Number( btnXList[0].value ),
+                y: Number( formDataObject[this.formKeys.y] ),
+                r: Number( formDataObject[this.formKeys.r] )
             }
 
+            console.log(shoot);
+            
             try {
-                const responseData = this.shootApi.sendShoot(shoot)
+                const responseData = await this.shootApi.sendShoot(shoot)
+                console.log("Server Response: ", responseData)
 
+                this.shootsHistory = responseData.history
+                this.shootsTableControler.update(this.shootsHistory)
+
+                this.canvasGraphics.render()
+                this.canvasGraphics.traceShoots(this.shootsHistory, shoot.r)
                 
             } catch (error) {
                 console.log("Error: ", error.message)
             }
-
-
-            this.shootsTableControler.update()
         }
     }
 

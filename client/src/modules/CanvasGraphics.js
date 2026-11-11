@@ -26,21 +26,13 @@ export class CanvasGraphics {
         this.ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight)
     }
 
-    shoot({x, y, r}) {
-        const isHit = this.checkShoot(x, y, r)
-
-        this.drawShoot(x, y, r, isHit)
-        
-        return isHit
-    }
-
-    traceShoots(shoots, lastSavedRadius) {
-        for (const shoot of Object.values(shoots)) {   
+    traceShoots(shoots, selectedRadius) {
+        for (const shoot of shoots) {   
             this.drawShoot(
                 shoot.x,
                 shoot.y,
-                lastSavedRadius,
-                this.checkShoot(shoot.x, shoot.y, lastSavedRadius)
+                selectedRadius,
+                shoot.isHit
             )
         }
     }
@@ -69,20 +61,6 @@ export class CanvasGraphics {
         this.ctx.fill()
 
         this.ctx.closePath()
-    }
-
-    checkShoot(x, y, r) {
-        if (
-            (x < -r || x > r) || (y < -r || y > r)
-            || (x > 0 && y < 0)
-            || (x < 0 && y < 0 && y < -2*x - r)
-            || (x > 0 && y > 0 && (x**2 + y**2 > r**2))
-            || (x < 0 && y > r/2 && y > 0)
-        ) {
-            return false
-        }
-
-        return true
     }
 
     drawXYEndings() {

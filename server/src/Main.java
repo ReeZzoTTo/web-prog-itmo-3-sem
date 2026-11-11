@@ -19,17 +19,39 @@ public class Main {
 
             try {
                 String query = System.getProperty("QUERY_STRING", "");
+                
+                if (query.equals("action=history")) {
+                    double executionTime = (System.nanoTime() - startTime) / 1_000_000.0;
 
+                    String currentTime = Instant.now().toString();
+
+                    String responseJson = jsonBuilder.buildHistoryResponse(currentTime, executionTime);
+
+                    sendResponse("200 OK", responseJson);
+
+                    continue;
+                }
+                
+                if (query.equals("action=clear")) {
+                    storageHistory.clear();
+                    double executionTime = (System.nanoTime() - startTime) / 1_000_000.0;
+
+                    String currentTime = Instant.now().toString();
+
+                    String responseJson = jsonBuilder.buildHistoryResponse(currentTime, executionTime);
+
+                    sendResponse("200 OK", responseJson);
+
+                    continue;
+                }
+                
                 ShotRequest shotRequest = argumentParser.getArguments(query);
 
                 requestValidator.validate(shotRequest);
 
                 Shot shot = processShot(shotRequest);
-
                 double executionTime = (System.nanoTime() - startTime) / 1_000_000.0;
-
                 String currentTime = Instant.now().toString();
-
                 String responseJson = jsonBuilder.buildJsonResponse(shot, currentTime, executionTime);
 
                 sendResponse("200 OK", responseJson);

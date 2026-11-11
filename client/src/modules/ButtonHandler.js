@@ -6,13 +6,13 @@ export class ButtonHandler {
     bindEvents() {
         const clearButton = document.querySelector(this.selectors.clearButton)
 
-        clearButton.addEventListener("click", (event) => {
-            this.shootsTable.clear()
+        clearButton.addEventListener("click", () => {
+            this.formValidation.clearHistory()
         })
     }
 
-    constructor(shootsTable) {
-        this.shootsTable = shootsTable
+    constructor(formValidation) {
+        this.formValidation = formValidation
         this.bindEvents()
     }
 }

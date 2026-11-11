@@ -37,6 +37,14 @@ public class JsonBuilder {
         return json.toString();
     }
 
+    public String buildHistoryResponse(String currentTime, double executionTime) {
+        return "{"
+            + "\"history\":" + historyToJson() + ","
+            + "\"currentTime\":\"" + currentTime + "\","
+            + "\"executionTimeMs\":" + executionTime
+            + "}";
+    }
+
     public String buildJsonResponse(Shot shot, String currentTime, double executionTime) {
         return "{"
             + "\"shot\":" + shotToJson(shot) + ","
