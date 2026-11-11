@@ -43,7 +43,7 @@ export class FormValidation {
     
     async clearHistory() {
         try {
-            await this.shootApi.clearHistory()
+            const responseData = await this.shootApi.clearHistory()
 
             this.shootsHistory = responseData.history
 
@@ -162,29 +162,6 @@ export class FormValidation {
                 firstInvalidElement.focus()
             }        
         } else {
-            // const localStorageShootsItem = localStorage.getItem(this.storageKey)
-            // let currentShootsState = {}
-            
-            // if (localStorageShootsItem) {
-            //     currentShootsState = JSON.parse(localStorageShootsItem)
-            // }
-
-            // if (!currentShootsState) {
-            //     currentShootsState = {}
-            // }
-
-            // this.canvasGraphics.render()
-            // currentShootsState[formState.timestamp] = formState
-            
-            // for (const curShootData of Object.keys(currentShootsState)) {
-            //     const curY = Number(currentShootsState[curShootData].y)
-            //     const curX = Number(currentShootsState[curShootData].x)
-
-            //     this.canvasGraphics.shoot({x: curX, y: curY, r: formState.r})
-            // }
-
-            // localStorage.setItem(this.storageKey, JSON.stringify(currentShootsState))
-
             const formElement = document.querySelector(this.selectors.shootForm)
             const formData = new FormData(formElement)
             const formDataObject = Object.fromEntries(formData)
